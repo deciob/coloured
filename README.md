@@ -1,27 +1,22 @@
-# cujoJS seed
+# cujoJS coffee seed
 
-This is a starter kit for building [cujoJS](http://cujojs.com) apps.
+CoffeeScript version of [cujoJS seed](https://github.com/cujojs/seed).
+
+This is a starter kit for building [cujoJS](http://cujojs.com) apps in CoffeeScript.
 
 ## How to get started
 
-### Fork/clone
-
-1. `git clone https://github.com/cujojs/seed.git <project-name>`
+1. `git clone https://github.com/deciob/cujojs-coffee-seed.git <project-name>`
 1. `cd <project-name>`
 1. `npm install`
 1. `npm start`
 1. Open http://localhost:8000/ in your browser
 1. Open your editor and start coding
 
-### Volo
+In new shell, to compile CoffeeScript:
 
-Using volo 0.3
+1. `node_modules/jitter/bin/jitter coffee app -b`
 
-1. `volo create <project-name> cujojs/seed`
-1. `cd <project-name>`
-1. `npm start`
-1. Open http://localhost:8000/ in your browser
-1. Open your editor and start coding
 
 ## Using the built-in server with another port
 
