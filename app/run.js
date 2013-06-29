@@ -55,8 +55,7 @@
         main: "meld"
       }
     ],
-    locale: false,
-    preloads: ["poly/all"]
+    locale: false
   };
   return curl(config, ["wire!app/main"]).then(success, fail);
 })(curl);

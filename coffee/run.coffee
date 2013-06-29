@@ -93,7 +93,7 @@
     #  location: "lib/poly"
     ]
     locale: false
-    preloads: ["poly/all"]
+    #preloads: ["poly/all"]
 
   curl(config, ["wire!app/main"]).then success, fail
 ) curl
