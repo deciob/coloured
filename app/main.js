@@ -1,8 +1,20 @@
 define({
-  message: {
+  controller: {
+    create: 'app/colours/colours_controller',
+    on: {
+      colours: {
+        'click:div.box': 'update',
+        'touchstart:div.box': 'update'
+      }
+    }
+  },
+  colours: {
     render: {
       template: {
         module: "text!colours/colours_template.html"
+      },
+      css: {
+        module: "css!colours/colours_structure.css"
       }
     },
     insert: {
@@ -17,6 +29,8 @@ define({
       }
     }, {
       module: "wire/dom/render"
+    }, {
+      module: "wire/on"
     }
   ]
 });
