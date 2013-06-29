@@ -8,7 +8,6 @@ define(function() {
     play: function(e) {
       var audio;
       audio = e.selectorTarget.firstElementChild;
-      audio.load();
       return audio.play();
     }
   };

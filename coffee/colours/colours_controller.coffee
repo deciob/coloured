@@ -7,5 +7,5 @@ define ->
 
   play: (e) ->
     audio = e.selectorTarget.firstElementChild
-    audio.load()
+    #audio.load()
     audio.play()
