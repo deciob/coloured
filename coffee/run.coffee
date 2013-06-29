@@ -88,9 +88,9 @@
       name: "meld"
       location: "lib/meld"
       main: "meld"
-    ,
-      name: "poly"
-      location: "lib/poly"
+    #,
+    #  name: "poly"
+    #  location: "lib/poly"
     ]
     locale: false
     preloads: ["poly/all"]

@@ -15,7 +15,6 @@ define
         'click:div.box': 'update'
         'touchstart:div.box': 'update'
 
-
   
   # Create a simple view by rendering html, replacing some i18n strings
   # and loading CSS.  Then, insert into the DOM
