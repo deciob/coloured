@@ -3,8 +3,7 @@ define({
     create: 'app/colours/colours_controller',
     on: {
       colours: {
-        'click:div.box': 'update',
-        'touchstart:div.box': 'update'
+        'touchstart:div.box': 'play'
       }
     }
   },

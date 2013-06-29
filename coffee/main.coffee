@@ -12,8 +12,8 @@ define
     #},
     on:
       colours: 
-        'click:div.box': 'update'
-        'touchstart:div.box': 'update'
+        #'click:div.box': 'play'
+        'touchstart:div.box': 'play'
 
   
   # Create a simple view by rendering html, replacing some i18n strings
