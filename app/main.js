@@ -7,9 +7,6 @@ define({
         at: 'colours'
       }
     },
-    init: {
-      init: []
-    },
     on: {
       colours: {
         'click:div.box': 'play'

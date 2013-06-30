@@ -30,9 +30,7 @@ define(function() {
       var onTimeUpdate, self;
       self = this;
       onTimeUpdate = function() {
-        if (self.currentSprite && this.currentTime >= self.currentSprite.start + self.currentSprite.length) {
-          return this.pause();
-        }
+        return console.log(this.currentTime);
       };
       return this.audioSprite.addEventListener('timeupdate', onTimeUpdate, false);
     },
@@ -42,9 +40,9 @@ define(function() {
       return e.target.style.background = colour;
     },
     play: function(e) {
-      this.currentSprite = this.spriteData[e.selectorTarget.className.slice(4)];
-      this.audioSprite.currentTime = this.currentSprite.start;
-      return this.audioSprite.play();
+      var audio;
+      audio = e.selectorTarget.firstElementChild;
+      return audio.play();
     },
     plugins: [
       {
