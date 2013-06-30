@@ -2,35 +2,37 @@ define(function() {
   return {
     spriteData: {
       red: {
-        start: 0.2,
-        length: 1
+        start: 0.6,
+        length: 1.1
       },
       orange: {
-        start: 1.6,
-        length: 1
+        start: 2.3,
+        length: 1.1
       },
       green: {
-        start: 2.8,
-        length: 1
+        start: 4.1,
+        length: 1.1
       },
       purple: {
-        start: 3.8,
-        length: 1.6
+        start: 6.1,
+        length: 1.1
       },
       blue: {
-        start: 5.1,
-        length: 1.3
+        start: 8.3,
+        length: 1.1
       },
       yellow: {
-        start: 6.1,
-        length: 1.3
+        start: 10.3,
+        length: 1.2
       }
     },
     init: function() {
       var onTimeUpdate, self;
       self = this;
       onTimeUpdate = function() {
-        return console.log(this.currentTime);
+        if (self.currentSprite && this.currentTime >= self.currentSprite.start + self.currentSprite.length) {
+          return this.pause();
+        }
       };
       return this.audioSprite.addEventListener('timeupdate', onTimeUpdate, false);
     },
@@ -40,9 +42,9 @@ define(function() {
       return e.target.style.background = colour;
     },
     play: function(e) {
-      var audio;
-      audio = e.selectorTarget.firstElementChild;
-      return audio.play();
+      this.currentSprite = this.spriteData[e.selectorTarget.className.slice(4)];
+      this.audioSprite.currentTime = this.currentSprite.start;
+      return this.audioSprite.play();
     },
     plugins: [
       {

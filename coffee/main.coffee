@@ -11,8 +11,8 @@ define
     properties:
       audioSprite: {$ref: 'dom.first!audio', at: 'colours'}
       #myView: { $ref: 'colours' }
-    #init:
-    #  init: [] 
+    init:
+      init: [] 
     on:
       colours: 
         'click:div.box': 'play'

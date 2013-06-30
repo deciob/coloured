@@ -2,23 +2,23 @@ define ->
 
   spriteData:
     red:
-        start: 0.2
-        length: 1
+        start: 0.6
+        length: 1.1
     orange:
-        start: 1.6
-        length: 1
+        start: 2.3
+        length: 1.1
     green:
-        start: 2.8
-        length: 1
+        start: 4.1
+        length: 1.1
     purple:
-        start: 3.8
-        length: 1.6
-    blue:
-        start: 5.1
-        length: 1.3
-    yellow:
         start: 6.1
-        length: 1.3
+        length: 1.1
+    blue:
+        start: 8.3
+        length: 1.1
+    yellow:
+        start: 10.3
+        length: 1.2
 
   #querySelector: 
   #  $ref: 'first!'
@@ -27,9 +27,9 @@ define ->
     self = @
     # time update handler to ensure we stop when a sprite is complete
     onTimeUpdate = ->
-      console.log @currentTime#, self.currentSprite
-      #if self.currentSprite and @currentTime >= self.currentSprite.start + self.currentSprite.length
-      #  @pause()
+      #console.log @currentTime#, self.currentSprite
+      if self.currentSprite and @currentTime >= self.currentSprite.start + self.currentSprite.length
+        @pause()
     #console.log '@@@@@@@@', self.audioSprite
     @audioSprite.addEventListener 'timeupdate', onTimeUpdate, false
 
@@ -39,11 +39,11 @@ define ->
     e.target.style.background = colour
 
   play: (e) ->
-    audio = e.selectorTarget.firstElementChild
-    audio.play()
-    #@currentSprite = @spriteData[e.selectorTarget.className[4..-1]]
-    #@audioSprite.currentTime = @currentSprite.start
-    #@audioSprite.play()
+    #audio = e.selectorTarget.firstElementChild
+    #audio.play()
+    @currentSprite = @spriteData[e.selectorTarget.className[4..-1]]
+    @audioSprite.currentTime = @currentSprite.start
+    @audioSprite.play()
 
   # Wire.js plugins
   plugins: [
