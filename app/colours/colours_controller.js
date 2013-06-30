@@ -14,16 +14,16 @@ define(function() {
         length: 1
       },
       purple: {
-        start: 4.4,
-        length: 1
+        start: 4,
+        length: 1.5
       },
       blue: {
-        start: 5.6,
-        length: 0.8
+        start: 5.1,
+        length: 1.3
       },
       yellow: {
-        start: 6.9,
-        length: 0.4
+        start: 6.4,
+        length: 1
       }
     },
     init: function() {
