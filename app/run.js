@@ -53,9 +53,13 @@
         name: "meld",
         location: "lib/meld",
         main: "meld"
+      }, {
+        name: "poly",
+        location: "lib/poly"
       }
     ],
-    locale: false
+    locale: false,
+    preloads: ["poly/all"]
   };
   return curl(config, ["wire!app/main"]).then(success, fail);
 })(curl);

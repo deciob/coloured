@@ -88,12 +88,12 @@
       name: "meld"
       location: "lib/meld"
       main: "meld"
-    #,
-    #  name: "poly"
-    #  location: "lib/poly"
+    ,
+      name: "poly"
+      location: "lib/poly"
     ]
     locale: false
-    #preloads: ["poly/all"]
+    preloads: ["poly/all"]
 
   curl(config, ["wire!app/main"]).then success, fail
 ) curl

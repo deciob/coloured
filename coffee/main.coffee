@@ -6,10 +6,13 @@ define
   #  module: "theme/basic.css"
 
   controller:
-    create: 'app/colours/colours_controller',
-    #properties: {
-    #  node: { $ref: 'first!span', at: 'view' }
-    #},
+    create: 'app/colours/colours_controller'
+
+    properties:
+      audioSprite: {$ref: 'dom.first!audio', at: 'colours'}
+      #myView: { $ref: 'colours' }
+    init:
+      init: [] 
     on:
       colours: 
         'click:div.box': 'play'

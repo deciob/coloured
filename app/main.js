@@ -1,6 +1,15 @@
 define({
   controller: {
     create: 'app/colours/colours_controller',
+    properties: {
+      audioSprite: {
+        $ref: 'dom.first!audio',
+        at: 'colours'
+      }
+    },
+    init: {
+      init: []
+    },
     on: {
       colours: {
         'click:div.box': 'play'
