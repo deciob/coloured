@@ -18,11 +18,11 @@ define(function() {
         length: 1.5
       },
       blue: {
-        start: 5.1,
-        length: 1.3
+        start: 5.3,
+        length: 1.1
       },
       yellow: {
-        start: 6.4,
+        start: 6.5,
         length: 1
       }
     },
