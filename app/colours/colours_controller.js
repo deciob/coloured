@@ -3,27 +3,27 @@ define(function() {
     spriteData: {
       red: {
         start: 0.2,
-        length: 1.1
+        length: 1
       },
       orange: {
         start: 1.6,
-        length: 1.1
+        length: 1
       },
       green: {
-        start: 3.2,
-        length: 1.1
+        start: 2.8,
+        length: 1
       },
       purple: {
-        start: 4.5,
-        length: 1.1
+        start: 4.4,
+        length: 1
       },
       blue: {
-        start: 5.8,
-        length: 1.1
+        start: 5.6,
+        length: 0.8
       },
       yellow: {
-        start: 7.2,
-        length: 1.1
+        start: 6.9,
+        length: 0.4
       }
     },
     init: function() {
