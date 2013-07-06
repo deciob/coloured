@@ -1,0 +1,30 @@
+/* line 13, ../sass/basic.scss */
+.magic-container {
+  *zoom: 1;
+  max-width: 940px;
+  _width: 940px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-left: auto;
+  margin-right: auto;
+}
+/* line 38, ../../../../../../var/lib/gems/1.9.1/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/utilities/general/_clearfix.scss */
+.magic-container:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+/* line 17, ../sass/basic.scss */
+.magic-container .colours {
+  width: 100%;
+  float: left;
+  margin-right: 2.12766%;
+  display: inline;
+}
+/* line 20, ../sass/basic.scss */
+.magic-container .colours .box {
+  width: 23.40426%;
+  float: left;
+  margin-right: 2.12766%;
+  display: inline;
+}

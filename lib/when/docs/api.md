@@ -2,12 +2,12 @@ API
 ===
 
 1. [when](#when)
-1. [Deferred](#deferred)
-1. [Resolver](#resolver)
 1. [Promise](#promise)
 	* [Extended Promise API](#extended-promise-api)
 	* [Progress events](#progress-events)
+1. [Deferred](#deferred)
 1. [Creating promises](#creating-promises)
+	* [when.promise](#whenpromise)
 	* [when.defer](#whendefer)
 	* [when.resolve](#whenresolve)
 	* [when.reject](#whenreject)
@@ -44,6 +44,7 @@ API
 	* [Node-style asynchronous functions](#node-style-asynchronous-functions)
 1. [Helpers](#helpers)
 	* [when/apply](#whenapply)
+1. [Debugging promises](#debugging-promises)
 
 ## when()
 
@@ -89,34 +90,6 @@ In either case, `when()` will *always* return a trusted when.js promise, which w
 
 ### See Also
 * [Read more about when() here](https://github.com/cujojs/when/wiki/when)
-
-## Deferred
-
-A deferred represents an operation whose resolution is *pending*.  It has separate `promise` and `resolver` parts that can be *safely* given out to separate groups of consumers and producers, respectively, to allow safe, one-way communication.
-
-```js
-var promise = deferred.promise;
-var resolver = deferred.resolver;
-```
-
-**Note:** Although a deferred has the full `resolver` API, this should used *for convenience only, by the creator of the deferred*.  Only the `resolver` should be given to consumers and producers.
-
-```js
-deferred.resolve(promiseOrValue);
-deferred.reject(reason);
-deferred.notify(update);
-```
-
-## Resolver
-
-The resolver represents *responsibility*--the responsibility of fulfilling or rejecting the associated promise.  This responsibility may be given out separately from the promise itself.
-
-```js
-var resolver = deferred.resolver;
-resolver.resolve(promiseOrValue);
-resolver.reject(reason);
-resolver.notify(update);
-```
 
 ## Promise
 
@@ -205,20 +178,22 @@ return doSomething()
 ### yield()
 
 ```js
-promise.yield(promiseOrValue);
+originalPromise.yield(promiseOrValue);
 ```
 
-Returns a promise:
+Returns a new promise:
 
-1. If `promiseOrValue` is a value, the returned promise will be fulfilled with `promiseOrValue`
-2. If `promiseOrValue` is a promise, the returned promise will be:
-	1. fulfilled with the fulfillment value of `promiseOrValue`, or
-	1. rejected with the rejection reason of `promiseOrValue`
+1. If `originalPromise` is rejected, the returned promise will be rejected with the same reason
+2. If `originalPromise` is fulfilled, then it "yields" the resolution of the returned promise to promiseOrValue, namely:
+    1. If `promiseOrValue` is a value, the returned promise will be fulfilled with `promiseOrValue`
+    2. If `promiseOrValue` is a promise, the returned promise will be:
+	    - fulfilled with the fulfillment value of `promiseOrValue`, or
+	    - rejected with the rejection reason of `promiseOrValue`
 
 In other words, it's much like:
 
 ```js
-promise.then(function() {
+originalPromise.then(function() {
 	return promiseOrValue;
 });
 ```
@@ -332,9 +307,61 @@ d.notify(update);
 // logProgress(2);
 ```
 
+## Deferred
+
+A deferred is a convenience `{promise, resolver}` pair.  Its `promise` and `resolver` parts can be given out to separate groups of consumers and producers, respectively, to allow safe, one-way communication.
+
+```js
+var promise = deferred.promise;
+var resolver = deferred.resolver;
+```
+
+**Note:** Although a deferred has the full `resolver` API, this should used *for convenience only, by the creator of the deferred*.  Only the `resolver` should be given to consumers and producers.
+
+```js
+deferred.resolve(promiseOrValue);
+deferred.reject(reason);
+deferred.notify(update);
+```
+
+### Resolver
+
+The resolver represents *responsibility*--the responsibility of fulfilling or rejecting the associated promise.  This responsibility may be given out separately from the promise itself.
+
+```js
+var resolver = deferred.resolver;
+resolver.resolve(promiseOrValue);
+resolver.reject(reason);
+resolver.notify(update);
+```
+
 # Creating promises
 
-Typically, promises are created as part of a [Deferred](#deferred) operation.  However, there are occasions when the fate of a promise is already known.
+## when.promise()
+
+```js
+var promise = when.promise(resolver);
+```
+
+Create a [Promise](#promise), whose fate is determined by the supplied resolver function.  The resolver function will be called synchronously, with 3 arguments:
+
+```js
+var promise = when.promise(function(resolve, reject, notify) {
+	// Do some work, possibly asynchronously, and then
+	// resolve or reject.  You can notify of progress events
+	// along the way if you want/need.
+
+	resolve(awesomeResult);
+	// or resolve(anotherPromise);
+	// or reject(nastyError);
+});
+```
+
+* `resolve(promiseOrValue)` - Primary function that seals the fate of the returned promise. Accepts either a non-promise value, or another promise.
+	* When called with a non-promise value, fulfills `promise` with that value.
+	* When called with another promise, e.g. `resolve(otherPromise)`, `promise`'s fate will be equivalent to that that of `otherPromise`.
+* `reject(reason)` - function that rejects `promise`.
+* `notify(update)` - function that issues progress events for `promise`.
 
 ## when.defer()
 
@@ -343,7 +370,7 @@ var deferred = when.defer();
 var promise = deferred.promise;
 ```
 
-Create a new [Deferred](#deferred) that can be used to resolve or reject its associated promise at a later time.
+Create a `{promise, resolver}` pair, aka [Deferred](#deferred).  In some scenarios it can be convenient to have access to both the `promise` and it's associated resolving functions, for example, to give each out to a separate party.  In such cases it can be convenient to use `when.defer()`.
 
 ## when.resolve()
 
@@ -1368,6 +1395,83 @@ deferred.promise.then(function(interestingValue) {
 });
 ```
 
+### `nodefn.liftCallback()`
+
+```js
+var promiseAcceptingFunction = nodefn.liftCallback(nodeback);
+```
+
+Transforms a node-style callback function into a function that accepts a
+promise.  This allows you to bridge promises and node-style in "the other
+direction".  For example, if you have a node-style callback,
+and a function that returns promises, you can lift the former to allow the
+two functions to be composed.
+
+The lifted function returns a promise that will resolve once the nodeback has finished:
+
+* if the nodeback returns without throwing, the returned promise will fulfill.
+* if the nodeback throws, the returned promise will reject.
+
+Note that since node-style callbacks *typically do not return a useful result*, the fulfillment value of the returned promise will most likely be `undefined`.  On the off-chance that the node-style callback *does* return a result, it will be used as the returned promise's fulfillment value.
+
+```js
+var nodefn, handlePromisedData, dataPromise;
+
+nodefn = require('when/node/function');
+
+function fetchData(key) {
+	// go get the data and,
+	return promise;
+}
+
+function handleData(err, result) {
+	if(err) {
+		// handle the error
+	} else {
+		// Use the result
+	}
+}
+
+// Lift handleData
+handlePromisedData = nodefn.liftCallback(handleData);
+
+dataPromise = fetchData(123);
+
+handlePromisedData(dataPromise);
+```
+
+### `nodefn.bindCallback()`
+
+```js
+var resultPromise = nodefn.bindCallback(promise, nodeback);
+```
+
+Lifts and then calls the node-style callback on the provided promise.  This is a one-shot version of [nodefn.liftCallback](nodefn-liftcallback), and the `resultPromise` will behave as described there.
+
+```js
+var nodefn, dataPromise;
+
+nodefn = require('when/node/function');
+
+function fetchData(key) {
+	// go get the data and,
+	return promise;
+}
+
+function handleData(err, result) {
+	if(err) {
+		// handle the error
+	} else {
+		// Use the result
+	}
+}
+
+// Lift handleData
+dataPromise = fetchData(123);
+
+nodefn.bindCallback(dataPromise, handleData);
+```
+
 # Helpers
 
 ## when/apply
@@ -1392,3 +1496,46 @@ when.all(arrayOfPromisesOrValues, apply(functionThatAcceptsMultipleArgs));
 
 More when/apply [examples on the wiki](https://github.com/cujojs/when/wiki/when-apply).
 
+# Debugging promises
+
+## when/monitor/*
+
+This dir contains experimental new promise monitoring and debugging utilities for when.js.
+
+## What does it do?
+
+It monitors promise state transitions and then takes action, such as logging to the console, when certain criteria are met, such as when a promise has been rejected but has no `onRejected` handlers attached to it, and thus the rejection would have been silent.
+
+Since promises are asynchronous and their execution may span multiple disjoint stacks, it can also attempt to stitch together a more complete stack trace.  This synthesized trace includes the point at which a promise chain was created, through all promises in the chain to the point where the rejection "escaped" the end of the chain without being handled.
+
+## Using it
+
+Using it is easy: Load `when/monitor/console` in your environment as early as possible.  That's it.  If you have no unhandled rejections, it will be silent, but when you do have them, it will report them to the console, complete with synthetic stack traces.
+
+It works in modern browsers (AMD), and in Node and RingoJS (CommonJS).
+
+### AMD
+
+Load `when/monitor/console` early, such as using curl.js's `preloads`:
+
+```js
+curl.config({
+	packages: [
+		{ name: 'when', location: 'path/to/when', main: 'when' },
+		// ... other packages
+	],
+	preloads: ['when/monitor/console']
+});
+
+curl(['my/app']);
+```
+
+### Node/Ringo/CommonJS
+
+```js
+require('when/monitor/console');
+```
+
+## Roll your own!
+
+The monitor modules are building blocks.  The [when/monitor/console](../monitor/console.js) module is one particular, and fairly simple, monitor built using the monitoring APIs and tools.  Using when/monitor/console as an example, you can build your own promise monitoring tools that look for specific types of errors, or patterns and log or display them in whatever way you need.

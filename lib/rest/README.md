@@ -228,6 +228,9 @@ rest.js is made available under the MIT license.  See LICENSE.txt for details.
 Change Log
 ----------
 
+0.9.3
+- fixes issues with uglified JSONP client in IE 8
+
 0.9.2
 - allow strings to represent request objects, the string value is treated as the path property
 - parsing 'Link' response headers in hateoas interceptor (rfc5988)

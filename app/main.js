@@ -1,9 +1,16 @@
 define({
+  theme: {
+    module: 'theme/basic.css'
+  },
   controller: {
     create: 'app/colours/colours_controller',
     properties: {
       audioSprite: {
         $ref: 'dom.first!audio',
+        at: 'colours'
+      },
+      boxes: {
+        $ref: 'dom.all!div.pure-g-r',
         at: 'colours'
       }
     },

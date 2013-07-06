@@ -25,6 +25,7 @@ define ->
 
   init: ->
     self = @
+    #@boxes.each
     # time update handler to ensure we stop when a sprite is complete
     onTimeUpdate = ->
       #console.log @currentTime#, self.currentSprite
@@ -32,6 +33,11 @@ define ->
         @pause()
     #console.log '@@@@@@@@', self.audioSprite
     @audioSprite.addEventListener 'timeupdate', onTimeUpdate, false
+
+    #onAudioAvailable = (event) ->
+    #  alert "Audio file loaded"
+    #
+    #@audioSprite.addEventListener 'MozAudioAvailable', onAudioAvailable, false
 
   update: (e) ->
     #@node.innerHTML = e.target.value
@@ -43,6 +49,7 @@ define ->
     #audio.play()
     @currentSprite = @spriteData[e.selectorTarget.className[4..-1]]
     @audioSprite.currentTime = @currentSprite.start
+    #console.log @audioSprite.buffered.length
     @audioSprite.play()
 
   # Wire.js plugins

@@ -35,6 +35,12 @@
         name: "colours",
         location: "app/colours"
       }, {
+        name: "theme",
+        location: "theme/css",
+        config: {
+          moduleLoader: "curl/plugin/css"
+        }
+      }, {
         name: "curl",
         location: "lib/curl/src/curl"
       }, {

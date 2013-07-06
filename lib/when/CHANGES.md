@@ -1,3 +1,15 @@
+### 2.2.1
+
+* Fix for `when.defer().reject()` bypassing the unhandled rejection monitor. (#166)
+* Fix for `when/function`, `when/callbacks`, and `when/node/function` not preserving `thisArg`. (#162)
+* Doc clarifications for [`promise.yield`](docs/api.md#yield). (#164)
+
+### 2.2.0
+
+* New experimental [promise monitoring and debugging](docs.md#debugging-promises) via `when/monitor/console`.
+* New [`when.promise(resolver)`](docs/api.md#whenpromise) promise creation API. A lighter alternative to the heavier `when.defer()`
+* New `bindCallback` and `liftCallback` in `when/node/function` for more integration options with node-style callbacks.
+
 ### 2.1.1
 
 * Quote internal usages of `promise.yield` to workaround .NET minifier tools that don't yet understand ES5 identifier-as-property rules.  See [#157](https://github.com/cujojs/when/issues/157)

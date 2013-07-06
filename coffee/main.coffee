@@ -2,14 +2,15 @@ define
   
   # Load a basic theme. This is just a CSS file, and since a moduleLoader is
   # configured in run.js, curl knows to load this as CSS.
-  #theme:
-  #  module: "theme/basic.css"
+  theme: 
+    module: 'theme/basic.css'
 
   controller:
     create: 'app/colours/colours_controller'
 
     properties:
       audioSprite: {$ref: 'dom.first!audio', at: 'colours'}
+      boxes: {$ref: 'dom.all!div.pure-g-r', at: 'colours'}
       #myView: { $ref: 'colours' }
     init:
       init: [] 
