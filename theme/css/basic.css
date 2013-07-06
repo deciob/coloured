@@ -1,30 +1,23 @@
-/* line 13, ../sass/basic.scss */
-.magic-container {
+/* line 12, ../sass/basic.scss */
+.main {
   *zoom: 1;
-  max-width: 940px;
-  _width: 940px;
-  padding-left: 10px;
-  padding-right: 10px;
+  max-width: 50em;
+  _width: 50em;
+  padding-left: 1%;
+  padding-right: 1%;
   margin-left: auto;
   margin-right: auto;
 }
 /* line 38, ../../../../../../var/lib/gems/1.9.1/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/utilities/general/_clearfix.scss */
-.magic-container:after {
+.main:after {
   content: "";
   display: table;
   clear: both;
 }
-/* line 17, ../sass/basic.scss */
-.magic-container .colours {
-  width: 100%;
+/* line 15, ../sass/basic.scss */
+.main .box {
+  width: 31.70732%;
   float: left;
-  margin-right: 2.12766%;
-  display: inline;
-}
-/* line 20, ../sass/basic.scss */
-.magic-container .colours .box {
-  width: 23.40426%;
-  float: left;
-  margin-right: 2.12766%;
+  margin-right: 2.43902%;
   display: inline;
 }
