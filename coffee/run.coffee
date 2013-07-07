@@ -61,6 +61,9 @@
       throw msg
       
   config =
+    #paths:
+    #  'lodash': "lib/lodash"
+    #preloads: ['lodash']
     packages: [
       name: "colours"
       location: "app/colours"
@@ -91,6 +94,10 @@
     ,
       name: "poly"
       location: "lib/poly"
+    ,
+      name: "lodash"
+      location: "lib/lodash"
+      main: "lodash"
     ]
     locale: false
     preloads: ["poly/all"]

@@ -8,14 +8,7 @@ define({
       audioSprite: {
         $ref: 'dom.first!audio',
         at: 'colours'
-      },
-      boxes: {
-        $ref: 'dom.all!div.pure-g-r',
-        at: 'colours'
       }
-    },
-    init: {
-      init: []
     },
     on: {
       colours: {

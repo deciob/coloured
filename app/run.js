@@ -62,6 +62,10 @@
       }, {
         name: "poly",
         location: "lib/poly"
+      }, {
+        name: "lodash",
+        location: "lib/lodash",
+        main: "lodash"
       }
     ],
     locale: false,

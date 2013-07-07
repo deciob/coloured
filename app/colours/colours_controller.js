@@ -1,4 +1,4 @@
-define(function() {
+define(["lodash"], function(_) {
   return {
     spriteData: {
       red: {
@@ -26,24 +26,17 @@ define(function() {
         length: 1.2
       }
     },
-    init: function() {
-      var onTimeUpdate, self;
-      self = this;
-      onTimeUpdate = function() {
-        if (self.currentSprite && this.currentTime >= self.currentSprite.start + self.currentSprite.length) {
-          return this.pause();
-        }
-      };
-      return this.audioSprite.addEventListener('timeupdate', onTimeUpdate, false);
-    },
-    update: function(e) {
-      var colour;
-      colour = '#' + (0x1000000 + (Math.random()) * 0xffffff).toString(16).substr(1, 6);
-      return e.target.style.background = colour;
+    onTimeUpdate: function(evt, spr, self) {
+      if (evt.currentTarget.currentTime > (spr.start + spr.length)) {
+        self.audioSprite.removeEventListener('timeupdate', self.onTimeUpdatePartial, false);
+        return this.pause();
+      }
     },
     play: function(e) {
       this.currentSprite = this.spriteData[e.selectorTarget.className.slice(4)];
       this.audioSprite.currentTime = this.currentSprite.start;
+      this.onTimeUpdatePartial = _.partialRight(this.onTimeUpdate, this.currentSprite, this);
+      this.audioSprite.addEventListener('timeupdate', this.onTimeUpdatePartial, false);
       return this.audioSprite.play();
     },
     plugins: [

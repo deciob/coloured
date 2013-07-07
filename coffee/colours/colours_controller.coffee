@@ -1,4 +1,4 @@
-define ->
+define ["lodash"], (_) ->
 
   spriteData:
     red:
@@ -20,36 +20,17 @@ define ->
         start: 10.3
         length: 1.2
 
-  #querySelector: 
-  #  $ref: 'first!'
-
-  init: ->
-    self = @
-    #@boxes.each
-    # time update handler to ensure we stop when a sprite is complete
-    onTimeUpdate = ->
-      #console.log @currentTime#, self.currentSprite
-      if self.currentSprite and @currentTime >= self.currentSprite.start + self.currentSprite.length
-        @pause()
-    #console.log '@@@@@@@@', self.audioSprite
-    @audioSprite.addEventListener 'timeupdate', onTimeUpdate, false
-
-    #onAudioAvailable = (event) ->
-    #  alert "Audio file loaded"
-    #
-    #@audioSprite.addEventListener 'MozAudioAvailable', onAudioAvailable, false
-
-  update: (e) ->
-    #@node.innerHTML = e.target.value
-    colour = '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6)
-    e.target.style.background = colour
+  onTimeUpdate: (evt, spr, self) ->
+    if evt.currentTarget.currentTime > (spr.start + spr.length)
+      self.audioSprite.removeEventListener('timeupdate', 
+        self.onTimeUpdatePartial, false)
+      @pause()
 
   play: (e) ->
-    #audio = e.selectorTarget.firstElementChild
-    #audio.play()
     @currentSprite = @spriteData[e.selectorTarget.className[4..-1]]
     @audioSprite.currentTime = @currentSprite.start
-    #console.log @audioSprite.buffered.length
+    @onTimeUpdatePartial = _.partialRight @onTimeUpdate, @currentSprite, @
+    @audioSprite.addEventListener 'timeupdate', @onTimeUpdatePartial, false
     @audioSprite.play()
 
   # Wire.js plugins

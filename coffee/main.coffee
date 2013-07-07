@@ -7,13 +7,12 @@ define
 
   controller:
     create: 'app/colours/colours_controller'
+    #args: ['lodash']
 
     properties:
       audioSprite: {$ref: 'dom.first!audio', at: 'colours'}
-      boxes: {$ref: 'dom.all!div.pure-g-r', at: 'colours'}
-      #myView: { $ref: 'colours' }
-    init:
-      init: [] 
+    #init: "init"
+      #init: [] # Array of arguments to pass to the init function
     on:
       colours: 
         'click:div.box': 'play'
