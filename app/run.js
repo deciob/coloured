@@ -30,6 +30,7 @@
     }
   };
   config = {
+    baseUrl: './',
     packages: [
       {
         name: "colours",

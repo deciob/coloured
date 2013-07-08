@@ -1,6 +1,5 @@
 ((curl) ->
   
-  # baseUrl: '',
   #paths: {
   # Configure paths here
   #},
@@ -61,6 +60,8 @@
       throw msg
       
   config =
+    baseUrl: './'
+    ,
     #paths:
     #  'lodash': "lib/lodash"
     #preloads: ['lodash']
