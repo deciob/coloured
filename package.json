@@ -37,7 +37,9 @@
     "grunt-contrib-copy": "~0.4.1",
     "grunt-contrib-watch": "~0.3.1",
     "grunt-coffeelint": "0.0.6",
-    "grunt-contrib-compass": ""
+    "grunt-contrib-compass": "",
+    "lodash": "",
+    "buster": ""
 	},
 	"scripts": {
 		"postinstall": "bower install",

@@ -1,0 +1,13 @@
+{
+  "name": "wire",
+  "homepage": "https://github.com/cujojs/wire",
+  "version": "0.9.4",
+  "_release": "0.9.4",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.9.4",
+    "commit": "a75d3bf65dd8fc2a2616c4b46f3edf3fcfaebdc2"
+  },
+  "_source": "git://github.com/cujojs/wire.git",
+  "_target": "~0.9"
+}

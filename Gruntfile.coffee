@@ -1,16 +1,17 @@
 module.exports = (grunt) ->
   grunt.initConfig(
     pkg: grunt.file.readJSON('package.json')
-    meta:
-      banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
-        '<%= grunt.template.today("yyyy-mm-dd") %>\\n' +
-        '<%= pkg.homepage ? "* " + pkg.homepage + "\\n" : "" %>' +
-        '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>; */'
+    meta: ""
 
     coffee:
       options:
         bare: true
-      src:
+      test:
+        files:
+          'test/buster.js': 'test/coffee/buster.coffee'
+          'test/colours/colours_controller-test.js': 
+            'test/coffee/colours/colours_controller-test.coffee'
+      app:
         expand: true
         cwd: 'coffee'
         src: '**/*.coffee'
@@ -42,7 +43,8 @@ module.exports = (grunt) ->
     #  #    cssDir: 'theme/css'
 
     watch:
-      files: ['coffee/**/*.coffee', 'theme/sass/*.scss'],
+      files: ['coffee/**/*.coffee', 'theme/sass/*.scss', 
+        'test/coffee/**/*.coffee'],
       tasks: 'default'
 
     coffeelint:
@@ -60,3 +62,4 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks('grunt-contrib-compass');
 
   grunt.registerTask('default', ['coffee', 'compass'])
+  #grunt.registerTask('default', ['coffee'])
