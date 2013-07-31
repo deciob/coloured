@@ -6,16 +6,18 @@ define
     module: 'theme/basic.css'
 
   controller:
-    create: 'app/colours/colours_controller'
-    #args: ['lodash']
+    create: 
+      module: 'app/colours/audio_controller'
+      args:
+        audioFile: "app/colours/audio/colours.ogg"
 
     properties:
       audioSprite: {$ref: 'dom.first!audio', at: 'colours'}
-    #init: "init"
-      #init: [] # Array of arguments to pass to the init function
+    init: #"init"
+      init: [1,2,3] # Array of arguments to pass to the init function
     on:
       colours: 
-        'click:div.box': 'play'
+        'click:div.box': 'log'
         #'touchstart:div.box': 'play'
 
   

@@ -3,16 +3,24 @@ define({
     module: 'theme/basic.css'
   },
   controller: {
-    create: 'app/colours/colours_controller',
+    create: {
+      module: 'app/colours/audio_controller',
+      args: {
+        audioFile: "app/colours/audio/colours.ogg"
+      }
+    },
     properties: {
       audioSprite: {
         $ref: 'dom.first!audio',
         at: 'colours'
       }
     },
+    init: {
+      init: [1, 2, 3]
+    },
     on: {
       colours: {
-        'click:div.box': 'play'
+        'click:div.box': 'log'
       }
     }
   },
