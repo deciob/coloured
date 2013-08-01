@@ -2,23 +2,31 @@
 
   define ["lodash"], (_) ->
 
-    AudioController = (audioFile) ->
-      #console.log "AudioController constructor", audioFile
-      @audio = new Audio(audioFile).play()
+    AudioController = (args) ->
+      @audio = new Audio(args.audioFile)
+      @spriteMap = args.spriteMap
+      @
 
     AudioController:: =
-      init: (a,b,c) ->
-        console.log a,b,c
+      init: (a) ->
+        console.log a
 
-      log: (e) ->
-        console.log e
+      onTimeUpdate: (evt, spr) ->
+        if evt.currentTarget.currentTime > (spr.start + spr.length)
+          @pause()
 
-      # Wire.js plugins
-      plugins: [
-        module: "wire/dom"
-      ]
-  
-      isConstructor: true
+      play: (e) ->
+        @audio.removeEventListener 'timeupdate', @onTimeUpdateP, false
+        @audio.pause()
+
+        currentSprite = @spriteMap[e.selectorTarget.className[4..-1]]
+        @audio.currentTime = currentSprite.start
+        @onTimeUpdateP = _.partialRight @onTimeUpdate, currentSprite
+        
+        @audio.addEventListener 'timeupdate', @onTimeUpdateP, false
+        @audio.play()
+        
+    AudioController.plugins = [module: "wire/dom"]
 
     AudioController
 
