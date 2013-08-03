@@ -63,8 +63,8 @@
     baseUrl: './'
     ,
     #paths:
-    #  'lodash': "lib/lodash"
-    #preloads: ['lodash']
+    #  'audio_constructor': "app/utils/audio_constructor"
+    #,
     packages: [
       name: "colours"
       location: "app/colours"

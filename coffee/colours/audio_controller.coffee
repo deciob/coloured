@@ -3,7 +3,7 @@
   define ["lodash"], (_) ->
 
     AudioController = (args) ->
-      @audio = new Audio(args.audioFile)
+      @audio = args.audio
       @spriteMap = args.spriteMap
       @
 

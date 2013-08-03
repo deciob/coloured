@@ -5,35 +5,43 @@ define
   theme: 
     module: 'theme/basic.css'
 
-  controller:
+  audioConf:
+    audioFile: "app/colours/audio/colours.ogg"
+    spriteMap:
+      red:
+        start: 0.6
+        length: 1.1
+      orange:
+        start: 2.3
+        length: 1.1
+      green:
+        start: 4.1
+        length: 1.1
+      purple:
+        start: 6.1
+        length: 1.1
+      blue:
+        start: 8.3
+        length: 1.1
+      yellow:
+        start: 10.3
+        length: 1.2
+
+  # It simply returns an HTML5 new Audio instance
+  audioConstructur:
+    create:
+      module: 'app/utils/audio_constructor'
+      args:
+        audioFile: 
+          $ref: "audioConf.audioFile"
+
+  audioController:
     create: 
       module: 'app/colours/audio_controller'
       args:
-        audioFile: "app/colours/audio/colours.ogg"
-        spriteMap:
-          red:
-            start: 0.6
-            length: 1.1
-          orange:
-            start: 2.3
-            length: 1.1
-          green:
-            start: 4.1
-            length: 1.1
-          purple:
-            start: 6.1
-            length: 1.1
-          blue:
-            start: 8.3
-            length: 1.1
-          yellow:
-            start: 10.3
-            length: 1.2
-
-    #properties:
-    #  audioSprite: {$ref: 'dom.first!audio', at: 'colours'}
-    #init:
-    #  init: ["I am an init function argument"]
+        audio: $ref: "audioConstructur"
+        spriteMap: 
+          $ref: "audioConf.spriteMap"
     on:
       colours: 
         'click:div.box': 'play'

@@ -2,7 +2,7 @@
   return define(["lodash"], function(_) {
     var AudioController;
     AudioController = function(args) {
-      this.audio = new Audio(args.audioFile);
+      this.audio = args.audio;
       this.spriteMap = args.spriteMap;
       return this;
     };
