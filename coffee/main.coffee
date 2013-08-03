@@ -37,7 +37,7 @@ define
 
   audioController:
     create: 
-      module: 'app/colours/audio_controller'
+      module: 'app/utils/audio_controller'
       args:
         audio: $ref: "audioConstructur"
         spriteMap: 
