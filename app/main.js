@@ -2,41 +2,15 @@ define({
   theme: {
     module: 'theme/basic.css'
   },
-  audioConf: {
-    audioFile: "app/colours/audio/colours.ogg",
-    spriteMap: {
-      red: {
-        start: 0.6,
-        length: 1.1
-      },
-      orange: {
-        start: 2.3,
-        length: 1.1
-      },
-      green: {
-        start: 4.1,
-        length: 1.1
-      },
-      purple: {
-        start: 6.1,
-        length: 1.1
-      },
-      blue: {
-        start: 8.3,
-        length: 1.1
-      },
-      yellow: {
-        start: 10.3,
-        length: 1.2
-      }
-    }
+  coloursConf: {
+    module: "app/colours/colours_config"
   },
   audioConstructur: {
     create: {
       module: 'app/utils/audio_constructor',
       args: {
         audioFile: {
-          $ref: "audioConf.audioFile"
+          $ref: "coloursConf.audioFile"
         }
       }
     }
@@ -49,7 +23,7 @@ define({
           $ref: "audioConstructur"
         },
         spriteMap: {
-          $ref: "audioConf.spriteMap"
+          $ref: "coloursConf.spriteMap"
         }
       }
     },

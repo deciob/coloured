@@ -5,27 +5,8 @@ define
   theme: 
     module: 'theme/basic.css'
 
-  audioConf:
-    audioFile: "app/colours/audio/colours.ogg"
-    spriteMap:
-      red:
-        start: 0.6
-        length: 1.1
-      orange:
-        start: 2.3
-        length: 1.1
-      green:
-        start: 4.1
-        length: 1.1
-      purple:
-        start: 6.1
-        length: 1.1
-      blue:
-        start: 8.3
-        length: 1.1
-      yellow:
-        start: 10.3
-        length: 1.2
+  coloursConf:
+    module: "app/colours/colours_config"
 
   # It simply returns an HTML5 new Audio instance
   audioConstructur:
@@ -33,7 +14,7 @@ define
       module: 'app/utils/audio_constructor'
       args:
         audioFile: 
-          $ref: "audioConf.audioFile"
+          $ref: "coloursConf.audioFile"
 
   audioController:
     create: 
@@ -41,7 +22,7 @@ define
       args:
         audio: $ref: "audioConstructur"
         spriteMap: 
-          $ref: "audioConf.spriteMap"
+          $ref: "coloursConf.spriteMap"
     on:
       colours: 
         'click:div.box': 'play'
