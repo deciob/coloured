@@ -69,6 +69,9 @@
       name: "colours"
       location: "app/colours"
     ,
+      name: "navigation"
+      location: "app/navigation"
+    ,
       name: "theme"
       location: "theme/css"
       config:

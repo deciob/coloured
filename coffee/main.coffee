@@ -5,8 +5,23 @@ define
   theme: 
     module: 'theme/basic.css'
 
+  navigation:
+    render:
+      template:
+        module: "text!navigation/navigation_template.html"
+    insert:
+      at: "dom.first!header"
+
   coloursConf:
     module: "app/colours/colours_config"
+
+  navigationController:
+    create: 
+      module: 'app/navigation/navigation_controller'
+    on:
+      navigation: 
+        'click:div.nav': 'navigate'
+        #'touchstart:div.box': 'play'
 
   # It simply returns an HTML5 new Audio instance
   audioConstructur:
@@ -39,7 +54,7 @@ define
         module: "css!colours/colours_structure.css"
 
     insert:
-      at: "dom.first!body"
+      at: "dom.first!section"
 
     #on:
     #  # Whenever the user clicks a link or a <button>
