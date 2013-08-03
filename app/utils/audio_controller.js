@@ -16,13 +16,10 @@
         this.audio.removeEventListener('timeupdate', this.onTimeUpdateP, false);
         return this.audio.pause();
       },
-      getCurrentSprite: function(className) {
-        return this.spriteMap[className.slice(4)];
-      },
       play: function(e) {
         var currentSprite;
         this.resetAudio();
-        currentSprite = this.getCurrentSprite(e.selectorTarget.className);
+        currentSprite = this.spriteMap[e.selectorTarget.className.slice(4)];
         this.audio.currentTime = currentSprite.start;
         this.onTimeUpdateP = _.partialRight(this.onTimeUpdate, currentSprite);
         this.audio.addEventListener('timeupdate', this.onTimeUpdateP, false);

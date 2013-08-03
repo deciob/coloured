@@ -17,12 +17,9 @@
         @audio.removeEventListener 'timeupdate', @onTimeUpdateP, false
         @audio.pause()
 
-      getCurrentSprite: (className) ->
-        @spriteMap[className[4..-1]]
-
       play: (e) ->
         @resetAudio()
-        currentSprite = @getCurrentSprite e.selectorTarget.className
+        currentSprite = @spriteMap[e.selectorTarget.className[4..-1]]
         @audio.currentTime = currentSprite.start
         # Passing the current sprite reference to the `timeupdate`
         # callback by using a partial application.
