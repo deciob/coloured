@@ -8,8 +8,6 @@
       @
 
     AudioController.prototype =
-      init: (a) ->
-        console.log a
 
       onTimeUpdate: (evt, spr) ->
         if evt.currentTarget.currentTime > (spr.start + spr.length)

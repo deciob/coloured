@@ -7,9 +7,6 @@
       return this;
     };
     AudioController.prototype = {
-      init: function(a) {
-        return console.log(a);
-      },
       onTimeUpdate: function(evt, spr) {
         if (evt.currentTarget.currentTime > (spr.start + spr.length)) {
           return this.pause();
