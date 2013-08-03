@@ -9,8 +9,8 @@ module.exports = (grunt) ->
       test:
         files:
           'test/buster.js': 'test/coffee/buster.coffee'
-          'test/colours/colours_controller-test.js': 
-            'test/coffee/colours/colours_controller-test.coffee'
+          'test/utils/audio_controller-test.js': 
+            'test/coffee/utils/audio_controller-test.coffee'
       app:
         expand: true
         cwd: 'coffee'
