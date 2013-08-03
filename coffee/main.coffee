@@ -30,8 +30,8 @@ define
             start: 10.3
             length: 1.2
 
-    properties:
-      audioSprite: {$ref: 'dom.first!audio', at: 'colours'}
+    #properties:
+    #  audioSprite: {$ref: 'dom.first!audio', at: 'colours'}
     #init:
     #  init: ["I am an init function argument"]
     on:

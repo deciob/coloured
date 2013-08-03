@@ -35,12 +35,6 @@ define({
         }
       }
     },
-    properties: {
-      audioSprite: {
-        $ref: 'dom.first!audio',
-        at: 'colours'
-      }
-    },
     on: {
       colours: {
         'click:div.box': 'play'
