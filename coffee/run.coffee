@@ -42,7 +42,7 @@
     # loaded at this point.  Therefore, you must use standard DOM
     # manipulation and legacy IE equivalents.
     console.log "an error happened during loading :'("
-    console.log ex.message
+    console.log ex, ex.message
     console.log ex.stack  if ex.stack
     el = document.getElementById("errout")
     msg = "An error occurred while loading: " + 
