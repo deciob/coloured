@@ -15,10 +15,13 @@
           return this.pause();
         }
       },
+      resetAudio: function() {
+        this.audio.removeEventListener('timeupdate', this.onTimeUpdateP, false);
+        return this.audio.pause();
+      },
       play: function(e) {
         var currentSprite;
-        this.audio.removeEventListener('timeupdate', this.onTimeUpdateP, false);
-        this.audio.pause();
+        this.resetAudio();
         currentSprite = this.spriteMap[e.selectorTarget.className.slice(4)];
         this.audio.currentTime = currentSprite.start;
         this.onTimeUpdateP = _.partialRight(this.onTimeUpdate, currentSprite);
