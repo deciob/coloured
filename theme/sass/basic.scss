@@ -1,13 +1,25 @@
 @import "susy";
 
-// Elastic grid as percentages
-$total-columns: 6;
-$column-width: 12%;
-$gutter-width: 2%;
-$grid-padding: 1%;
 
-$container-style: magic;
-$container-width: 100%;
+$total-cols             : 12;  
+$col-width              : 4em;  
+$gutter-width           : 1em;  
+$side-gutter-width      : $gutter-width;
+
+//$container-style: magic;
+//$container-width: 100%;
+
+body {
+  @include container;
+}
+
+
+
+section {
+  //@include span-columns(12); 
+}
+
+
 
 header {
 
@@ -17,6 +29,7 @@ header {
     height: 80px;
     width: 159px;
     background-size: 159px 80px;
+    margin: 3em 1em;
   }
   .nav.grey {
     filter: gray;
@@ -35,10 +48,10 @@ header {
 }
 
 .main { 
-  @include container;
+  //@include span-columns(12); 
 
   .box {
-    @include span-columns(2,6); // each gallery-image is 2 of 6 cols.
+    @include span-columns(3,12); // each gallery-image is 2 of 6 cols.
   }
 
 }
