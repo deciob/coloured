@@ -20,13 +20,14 @@
         return this.audio[lang].pause();
       },
       play: function(e) {
-        var currentSprite;
+        var currentSprite, lang;
+        lang = this.getCurrentLanguage();
         this.resetAudio();
-        currentSprite = this.conf[this.lang].spriteMap[e.selectorTarget.className.slice(4)];
-        this.audio[this.lang].currentTime = currentSprite.start;
+        currentSprite = this.conf[lang].spriteMap[e.selectorTarget.className.slice(4)];
+        this.audio[lang].currentTime = currentSprite.start;
         this.onTimeUpdateP = _.partialRight(this.onTimeUpdate, currentSprite);
-        this.audio[this.lang].addEventListener('timeupdate', this.onTimeUpdateP, false);
-        return this.audio[this.lang].play();
+        this.audio[lang].addEventListener('timeupdate', this.onTimeUpdateP, false);
+        return this.audio[lang].play();
       },
       setCurrentLanguage: function(lang) {
         return this.lang = lang || this.defaultLanguage;

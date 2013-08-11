@@ -31,14 +31,18 @@ define({
       }
     },
     ready: {
-      setCurrentLanguage: []
+      setCurrentLanguage: [],
+      initNavigation: [
+        {
+          $ref: "defaultLanguage"
+        }
+      ]
     },
     before: {
       setCurrentLanguage: 'audioController.resetAudio'
     },
     after: {
-      setCurrentLanguage: 'audioController.setCurrentLanguage',
-      setCurrentLanguage: 'navigationController.initNavigation'
+      setCurrentLanguage: 'audioController.setCurrentLanguage'
     }
   },
   audioConstructurEnglish: {

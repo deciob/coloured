@@ -20,15 +20,16 @@
         @audio[lang].pause()
 
       play: (e) ->
+        lang = @getCurrentLanguage()
         @resetAudio()
-        currentSprite = @conf[@lang]
+        currentSprite = @conf[lang]
           .spriteMap[e.selectorTarget.className[4..-1]] # removing "box "
-        @audio[@lang].currentTime = currentSprite.start
+        @audio[lang].currentTime = currentSprite.start
         # Passing the current sprite reference to the `timeupdate`
         # callback by using a partial application.
         @onTimeUpdateP = _.partialRight @onTimeUpdate, currentSprite
-        @audio[@lang].addEventListener 'timeupdate', @onTimeUpdateP, false
-        @audio[@lang].play()
+        @audio[lang].addEventListener 'timeupdate', @onTimeUpdateP, false
+        @audio[lang].play()
 
       # Initially called on wire init.
       setCurrentLanguage: (lang) ->

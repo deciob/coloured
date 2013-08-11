@@ -29,11 +29,11 @@ define
 
     ready: 
       setCurrentLanguage: []
+      initNavigation: [$ref: "defaultLanguage"]
     before:
       setCurrentLanguage: 'audioController.resetAudio'
     after:
       setCurrentLanguage: 'audioController.setCurrentLanguage'
-      setCurrentLanguage: 'navigationController.initNavigation'
 
   # It simply returns an HTML5 new Audio instance
   audioConstructurEnglish:
