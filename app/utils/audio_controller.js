@@ -15,7 +15,7 @@
       },
       resetAudio: function() {
         var lang;
-        lang = this.lang || this.defaultLanguage;
+        lang = this.getCurrentLanguage();
         this.audio[lang].removeEventListener('timeupdate', this.onTimeUpdateP, false);
         return this.audio[lang].pause();
       },
@@ -30,6 +30,10 @@
       },
       setCurrentLanguage: function(lang) {
         return this.lang = lang || this.defaultLanguage;
+      },
+      getCurrentLanguage: function() {
+        var lang;
+        return lang = this.lang || this.defaultLanguage;
       }
     };
     AudioController.plugins = [

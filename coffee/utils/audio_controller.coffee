@@ -15,7 +15,7 @@
           @pause()
 
       resetAudio: ->
-        lang = @lang or @defaultLanguage
+        lang = @getCurrentLanguage()
         @audio[lang].removeEventListener 'timeupdate', @onTimeUpdateP, false
         @audio[lang].pause()
 
@@ -33,6 +33,9 @@
       # Initially called on wire init.
       setCurrentLanguage: (lang) ->
         @lang = lang or @defaultLanguage
+
+      getCurrentLanguage: ->
+        lang = @lang or @defaultLanguage
         
     AudioController.plugins = [module: "wire/dom"]
 
