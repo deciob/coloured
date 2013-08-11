@@ -938,6 +938,107 @@ define('poly/lib/_base', ['require', 'exports', 'module'], function (require, ex
   }
 }).call(this);
 /**
+ * String polyfill / shims
+ *
+ * (c) copyright 2011-2013 Brian Cavalier and John Hann
+ *
+ * This module is part of the cujo.js family of libraries (http://cujojs.com/).
+ *
+ * Licensed under the MIT License at:
+ * 		http://www.opensource.org/licenses/mit-license.php
+ *
+ * Adds str.trim(), str.trimRight(), and str.trimLeft()
+ *
+ * Note: we don't bother trimming all possible ES5 white-space characters.
+ * If you truly need strict ES5 whitespace compliance in all browsers,
+ * create your own trim function.
+ * from http://perfectionkills.com/whitespace-deviations/
+ * '\x09-\x0D\x20\xA0\u1680\u180E\u2000-\u200A\u202F\u205F\u3000\u2028\u2029'
+ */
+define('poly/string', ['poly/lib/_base'], function (base) {
+	"use strict";
+
+	var proto = String.prototype,
+		featureMap,
+		has,
+		toString;
+
+	featureMap = {
+		'string-trim': 'trim',
+		'string-trimleft': 'trimLeft',
+		'string-trimright': 'trimRight'
+	};
+
+	function checkFeature (feature) {
+		var prop = featureMap[feature];
+		return base.isFunction(proto[prop]);
+	}
+
+	function neg () { return false; }
+
+	has = checkFeature;
+
+	// compressibility helper
+	function remove (str, rx) {
+		return str.replace(rx, '');
+	}
+
+	toString = base.createCaster(String, 'String');
+
+	var trimRightRx, trimLeftRx;
+
+	trimRightRx = /\s+$/;
+	trimLeftRx = /^\s+/;
+
+	function checkShims () {
+		if (!has('string-trim')) {
+			proto.trim = function trim () {
+				return remove(remove(toString(this), trimLeftRx), trimRightRx);
+			};
+		}
+
+		if (!has('string-trimleft')) {
+			proto.trimLeft = function trimLeft () {
+				return remove(toString(this), trimLeftRx);
+			};
+		}
+
+		if (!has('string-trimright')) {
+			proto.trimRight = function trimRight () {
+				return remove(toString(this), trimRightRx);
+			};
+		}
+
+	}
+
+	checkShims();
+
+	return {
+		setWhitespaceChars: function (wsc) {
+			trimRightRx = new RegExp(wsc + '$');
+			trimLeftRx = new RegExp('^' + wsc);
+			// fail all has() checks and check shims again
+			has = neg;
+			checkShims();
+		}
+	};
+
+});
+/**
+ * JSON polyfill / shim
+ *
+ * (c) copyright 2011-2013 Brian Cavalier and John Hann
+ *
+ * poly is part of the cujo.js family of libraries (http://cujojs.com/)
+ *
+ * Licensed under the MIT License at:
+ * 		http://www.opensource.org/licenses/mit-license.php
+ *
+ */
+define('poly/json', ['poly/support/json3'], function (JSON) {
+	return JSON;
+});
+/**
  * Object polyfill / shims
  *
  * (c) copyright 2011-2013 Brian Cavalier and John Hann
@@ -1251,107 +1352,6 @@ define('poly/object', ['poly/lib/_base'], function (base) {
 	};
 
 });
-/**
- * JSON polyfill / shim
- *
- * (c) copyright 2011-2013 Brian Cavalier and John Hann
- *
- * poly is part of the cujo.js family of libraries (http://cujojs.com/)
- *
- * Licensed under the MIT License at:
- * 		http://www.opensource.org/licenses/mit-license.php
- *
- */
-define('poly/json', ['poly/support/json3'], function (JSON) {
-	return JSON;
-});
-/**
- * String polyfill / shims
- *
- * (c) copyright 2011-2013 Brian Cavalier and John Hann
- *
- * This module is part of the cujo.js family of libraries (http://cujojs.com/).
- *
- * Licensed under the MIT License at:
- * 		http://www.opensource.org/licenses/mit-license.php
- *
- * Adds str.trim(), str.trimRight(), and str.trimLeft()
- *
- * Note: we don't bother trimming all possible ES5 white-space characters.
- * If you truly need strict ES5 whitespace compliance in all browsers,
- * create your own trim function.
- * from http://perfectionkills.com/whitespace-deviations/
- * '\x09-\x0D\x20\xA0\u1680\u180E\u2000-\u200A\u202F\u205F\u3000\u2028\u2029'
- */
-define('poly/string', ['poly/lib/_base'], function (base) {
-	"use strict";
-
-	var proto = String.prototype,
-		featureMap,
-		has,
-		toString;
-
-	featureMap = {
-		'string-trim': 'trim',
-		'string-trimleft': 'trimLeft',
-		'string-trimright': 'trimRight'
-	};
-
-	function checkFeature (feature) {
-		var prop = featureMap[feature];
-		return base.isFunction(proto[prop]);
-	}
-
-	function neg () { return false; }
-
-	has = checkFeature;
-
-	// compressibility helper
-	function remove (str, rx) {
-		return str.replace(rx, '');
-	}
-
-	toString = base.createCaster(String, 'String');
-
-	var trimRightRx, trimLeftRx;
-
-	trimRightRx = /\s+$/;
-	trimLeftRx = /^\s+/;
-
-	function checkShims () {
-		if (!has('string-trim')) {
-			proto.trim = function trim () {
-				return remove(remove(toString(this), trimLeftRx), trimRightRx);
-			};
-		}
-
-		if (!has('string-trimleft')) {
-			proto.trimLeft = function trimLeft () {
-				return remove(toString(this), trimLeftRx);
-			};
-		}
-
-		if (!has('string-trimright')) {
-			proto.trimRight = function trimRight () {
-				return remove(toString(this), trimRightRx);
-			};
-		}
-
-	}
-
-	checkShims();
-
-	return {
-		setWhitespaceChars: function (wsc) {
-			trimRightRx = new RegExp(wsc + '$');
-			trimLeftRx = new RegExp('^' + wsc);
-			// fail all has() checks and check shims again
-			has = neg;
-			checkShims();
-		}
-	};
-
-});
 /*
 	poly/date
 
@@ -1568,6 +1568,54 @@ define('poly/date', ['poly/lib/_base'], function (base) {
 
 });
 }(Date));
+/**
+ * Function polyfill / shims
+ *
+ * (c) copyright 2011-2013 Brian Cavalier and John Hann
+ *
+ * This module is part of the cujo.js family of libraries (http://cujojs.com/).
+ *
+ * Licensed under the MIT License at:
+ * 		http://www.opensource.org/licenses/mit-license.php
+ */
+define('poly/function', ['poly/lib/_base'], function (base) {
+"use strict";
+
+	var bind,
+		slice = [].slice,
+		proto = Function.prototype,
+		featureMap;
+
+	featureMap = {
+		'function-bind': 'bind'
+	};
+
+	function has (feature) {
+		var prop = featureMap[feature];
+		return base.isFunction(proto[prop]);
+	}
+
+	// check for missing features
+	if (!has('function-bind')) {
+		// adapted from Mozilla Developer Network example at
+		// https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function/bind
+		bind = function bind (obj) {
+			var args = slice.call(arguments, 1),
+				self = this,
+				nop = function () {},
+				bound = function () {
+				  return self.apply(this instanceof nop ? this : (obj || {}), args.concat(slice.call(arguments)));
+				};
+			nop.prototype = this.prototype || {}; // Firefox cries sometimes if prototype is undefined
+			bound.prototype = new nop();
+			return bound;
+		};
+		proto.bind = bind;
+	}
+
+	return {};
+
+});
 /*
 	Array -- a stand-alone module for using Javascript 1.6 array features
 	in lame-o browsers that don't support Javascript 1.6
@@ -1866,54 +1914,6 @@ define('poly/array', ['poly/lib/_base'], function (base) {
 	if (!Array.isArray) {
 		Array.isArray = isArray;
 	}
-
-});
-/**
- * Function polyfill / shims
- *
- * (c) copyright 2011-2013 Brian Cavalier and John Hann
- *
- * This module is part of the cujo.js family of libraries (http://cujojs.com/).
- *
- * Licensed under the MIT License at:
- * 		http://www.opensource.org/licenses/mit-license.php
- */
-define('poly/function', ['poly/lib/_base'], function (base) {
-"use strict";
-
-	var bind,
-		slice = [].slice,
-		proto = Function.prototype,
-		featureMap;
-
-	featureMap = {
-		'function-bind': 'bind'
-	};
-
-	function has (feature) {
-		var prop = featureMap[feature];
-		return base.isFunction(proto[prop]);
-	}
-
-	// check for missing features
-	if (!has('function-bind')) {
-		// adapted from Mozilla Developer Network example at
-		// https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function/bind
-		bind = function bind (obj) {
-			var args = slice.call(arguments, 1),
-				self = this,
-				nop = function () {},
-				bound = function () {
-				  return self.apply(this instanceof nop ? this : (obj || {}), args.concat(slice.call(arguments)));
-				};
-			nop.prototype = this.prototype || {}; // Firefox cries sometimes if prototype is undefined
-			bound.prototype = new nop();
-			return bound;
-		};
-		proto.bind = bind;
-	}
-
-	return {};
 
 });
 /**
@@ -3189,40 +3189,6 @@ define('when/when', function () {
  */
 
 (function(define){
-define('wire/lib/object', function () {
-"use strict";
-
-	return {
-		isObject: isObject,
-		inherit: inherit
-	};
-
-	function isObject(it) {
-		// In IE7 tos.call(null) is '[object Object]'
-		// so we need to check to see if 'it' is
-		// even set
-		return it && Object.prototype.toString.call(it) == '[object Object]';
-	}
-
-	function inherit(parent) {
-		return parent ? Object.create(parent) : {};
-	}
-
-});
-})(typeof define == 'function'
-	// AMD
-	? define
-	// CommonJS
-	: function(factory) { module.exports = factory(); }
-);
-/** @license MIT License (c) copyright B Cavalier & J Hann */
-
-/**
- * Licensed under the MIT License at:
- * http://www.opensource.org/licenses/mit-license.php
- */
-
-(function(define){
 define('wire/lib/array', function () {
 "use strict";
 
@@ -3245,6 +3211,40 @@ define('wire/lib/array', function () {
 
 	function fromArguments(args, index) {
 		return slice.call(args, index||0);
+	}
+
+});
+})(typeof define == 'function'
+	// AMD
+	? define
+	// CommonJS
+	: function(factory) { module.exports = factory(); }
+);
+/** @license MIT License (c) copyright B Cavalier & J Hann */
+
+/**
+ * Licensed under the MIT License at:
+ * http://www.opensource.org/licenses/mit-license.php
+ */
+
+(function(define){
+define('wire/lib/object', function () {
+"use strict";
+
+	return {
+		isObject: isObject,
+		inherit: inherit
+	};
+
+	function isObject(it) {
+		// In IE7 tos.call(null) is '[object Object]'
+		// so we need to check to see if 'it' is
+		// even set
+		return it && Object.prototype.toString.call(it) == '[object Object]';
+	}
+
+	function inherit(parent) {
+		return parent ? Object.create(parent) : {};
 	}
 
 });
@@ -3438,40 +3438,6 @@ define('wire/lib/invoker', ['require'], function (require) {
  * http://www.opensource.org/licenses/mit-license.php
  */
 
-/**
- * Abstract the platform's loader
- * @type {Function}
- * @param require {Function} platform-specific require
- * @return {Function}
- */
-if(typeof define == 'function' && define.amd) {
-	// AMD
-	define('wire/lib/moduleLoader', ['when/when'], function (when) {
-
-		return function createModuleLoader(require) {
-			return function(moduleId) {
-				var deferred = when.defer();
-				require([moduleId], deferred.resolve, deferred.reject);
-				return deferred.promise;
-			};
-		};
-
-	});
-
-} else {
-	// CommonJS
-	module.exports = function createModuleLoader(require) {
-		return require;
-	};
-
-}
-/** @license MIT License (c) copyright B Cavalier & J Hann */
-
-/**
- * Licensed under the MIT License at:
- * http://www.opensource.org/licenses/mit-license.php
- */
-
 (function(define){
 define('wire/lib/async', ['require', 'when/when', 'wire/lib/array'], function (require, $cram_r0, $cram_r1) {
 	"use strict";
@@ -3533,6 +3499,40 @@ define('wire/lib/async', ['require', 'when/when', 'wire/lib/array'], function (r
 
 });
 })(typeof define == 'function' && define.amd ? define : function(factory) { module.exports = factory(require); });
+/** @license MIT License (c) copyright B Cavalier & J Hann */
+
+/**
+ * Licensed under the MIT License at:
+ * http://www.opensource.org/licenses/mit-license.php
+ */
+
+/**
+ * Abstract the platform's loader
+ * @type {Function}
+ * @param require {Function} platform-specific require
+ * @return {Function}
+ */
+if(typeof define == 'function' && define.amd) {
+	// AMD
+	define('wire/lib/moduleLoader', ['when/when'], function (when) {
+
+		return function createModuleLoader(require) {
+			return function(moduleId) {
+				var deferred = when.defer();
+				require([moduleId], deferred.resolve, deferred.reject);
+				return deferred.promise;
+			};
+		};
+
+	});
+
+} else {
+	// CommonJS
+	module.exports = function createModuleLoader(require) {
+		return require;
+	};
+
+}
 /** @license MIT License (c) copyright B Cavalier & J Hann */
 
 /**
