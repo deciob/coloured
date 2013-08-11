@@ -3,8 +3,9 @@
   define ["lodash"], (_) ->
 
     AudioController = (args) ->
+      @defaultLanguage = args.defaultLanguage
       @audio = args.audio
-      @spriteMap = args.spriteMap
+      @conf = args.conf
       @
 
     AudioController.prototype =
@@ -14,18 +15,23 @@
           @pause()
 
       resetAudio: ->
-        @audio.removeEventListener 'timeupdate', @onTimeUpdateP, false
-        @audio.pause()
+        @audio[@lang].removeEventListener 'timeupdate', @onTimeUpdateP, false
+        @audio[@lang].pause()
 
       play: (e) ->
         @resetAudio()
-        currentSprite = @spriteMap[e.selectorTarget.className[4..-1]]
-        @audio.currentTime = currentSprite.start
+        currentSprite = @conf[@lang]
+          .spriteMap[e.selectorTarget.className[4..-1]] # removing "box "
+        @audio[@lang].currentTime = currentSprite.start
         # Passing the current sprite reference to the `timeupdate`
         # callback by using a partial application.
         @onTimeUpdateP = _.partialRight @onTimeUpdate, currentSprite
-        @audio.addEventListener 'timeupdate', @onTimeUpdateP, false
-        @audio.play()
+        @audio[@lang].addEventListener 'timeupdate', @onTimeUpdateP, false
+        @audio[@lang].play()
+
+      # Initially called on wire init.
+      setCurrentLanguage: (lang) ->
+        @lang = lang or @defaultLanguage
         
     AudioController.plugins = [module: "wire/dom"]
 

@@ -5,6 +5,11 @@ define
   theme: 
     module: 'theme/basic.css'
 
+  coloursConf:
+    module: "app/colours/colours_config"
+
+  defaultLanguage: "english"
+
   navigation:
     render:
       template:
@@ -12,32 +17,53 @@ define
     insert:
       at: "dom.first!header"
 
-  coloursConf:
-    module: "app/colours/colours_config"
-
   navigationController:
     create: 
       module: 'app/navigation/navigation_controller'
+      args:
+        defaultLanguage: $ref: "defaultLanguage"
     on:
       navigation: 
         'click:div.nav': 'navigate'
-        #'touchstart:div.box': 'play'
+    ready: "setCurrentLanguage"
+    after:
+      setCurrentLanguage: 'audioController.setCurrentLanguage'
 
   # It simply returns an HTML5 new Audio instance
-  audioConstructur:
+  audioConstructurEnglish:
     create:
       module: 'app/utils/audio_constructor'
       args:
-        audioFile: 
-          $ref: "coloursConf.audioFile"
+        language: "english"
+        conf: $ref: "coloursConf"
+
+  audioConstructurSpanish:
+    create:
+      module: 'app/utils/audio_constructor'
+      args:
+        language: "spanish"
+        conf: $ref: "coloursConf"
+
+  audioConstructurItalian:
+    create:
+      module: 'app/utils/audio_constructor'
+      args:
+        language: "italian"
+        conf: $ref: "coloursConf"
 
   audioController:
     create: 
       module: 'app/utils/audio_controller'
       args:
-        audio: $ref: "audioConstructur"
-        spriteMap: 
-          $ref: "coloursConf.spriteMap"
+        defaultLanguage: $ref: "defaultLanguage"
+        audio:
+          english: $ref: "audioConstructurEnglish"
+          spanish: $ref: "audioConstructurSpanish"
+          italian: $ref: "audioConstructurItalian"
+        conf: 
+          $ref: "coloursConf"
+    #init: "setCurrentLanguage"
+
     on:
       colours: 
         'click:div.box': 'play'
@@ -50,6 +76,8 @@ define
     render:
       template:
         module: "text!colours/colours_template.html"
+        #replace: 
+        #  module: 'i18n!colours/strings'
       css:
         module: "css!colours/colours_structure.css"
 
@@ -71,4 +99,6 @@ define
     module: "wire/dom/render"
   ,
     module: "wire/on"
+  ,
+    module: 'wire/aop'
   ]

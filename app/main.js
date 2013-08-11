@@ -2,6 +2,10 @@ define({
   theme: {
     module: 'theme/basic.css'
   },
+  coloursConf: {
+    module: "app/colours/colours_config"
+  },
+  defaultLanguage: "english",
   navigation: {
     render: {
       template: {
@@ -12,25 +16,54 @@ define({
       at: "dom.first!header"
     }
   },
-  coloursConf: {
-    module: "app/colours/colours_config"
-  },
   navigationController: {
     create: {
-      module: 'app/navigation/navigation_controller'
+      module: 'app/navigation/navigation_controller',
+      args: {
+        defaultLanguage: {
+          $ref: "defaultLanguage"
+        }
+      }
     },
     on: {
       navigation: {
         'click:div.nav': 'navigate'
       }
+    },
+    ready: "setCurrentLanguage",
+    after: {
+      setCurrentLanguage: 'audioController.setCurrentLanguage'
     }
   },
-  audioConstructur: {
+  audioConstructurEnglish: {
     create: {
       module: 'app/utils/audio_constructor',
       args: {
-        audioFile: {
-          $ref: "coloursConf.audioFile"
+        language: "english",
+        conf: {
+          $ref: "coloursConf"
+        }
+      }
+    }
+  },
+  audioConstructurSpanish: {
+    create: {
+      module: 'app/utils/audio_constructor',
+      args: {
+        language: "spanish",
+        conf: {
+          $ref: "coloursConf"
+        }
+      }
+    }
+  },
+  audioConstructurItalian: {
+    create: {
+      module: 'app/utils/audio_constructor',
+      args: {
+        language: "italian",
+        conf: {
+          $ref: "coloursConf"
         }
       }
     }
@@ -39,11 +72,22 @@ define({
     create: {
       module: 'app/utils/audio_controller',
       args: {
-        audio: {
-          $ref: "audioConstructur"
+        defaultLanguage: {
+          $ref: "defaultLanguage"
         },
-        spriteMap: {
-          $ref: "coloursConf.spriteMap"
+        audio: {
+          english: {
+            $ref: "audioConstructurEnglish"
+          },
+          spanish: {
+            $ref: "audioConstructurSpanish"
+          },
+          italian: {
+            $ref: "audioConstructurItalian"
+          }
+        },
+        conf: {
+          $ref: "coloursConf"
         }
       }
     },
@@ -76,6 +120,8 @@ define({
       module: "wire/dom/render"
     }, {
       module: "wire/on"
+    }, {
+      module: 'wire/aop'
     }
   ]
 });

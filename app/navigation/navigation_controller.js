@@ -1,15 +1,14 @@
 (function(define) {
   return define(["lodash"], function(_) {
     var NavigationController;
-    NavigationController = function() {
+    NavigationController = function(args) {
+      this.defaultLanguage = args.defaultLanguage;
       return this;
     };
     NavigationController.prototype = {
-      updateNavigation: function(e) {
-        var currentCountry, targetEl, targetId;
-        targetId = e.selectorTarget.id;
+      updateNavigation: function(targetId) {
+        var targetEl;
         targetEl = document.getElementById(targetId);
-        currentCountry = e.selectorTarget.id.slice(4);
         return _.each(targetEl.parentNode.childNodes, function(el) {
           if (el.nodeName === "DIV" && el.id === targetId) {
             el.classList.remove('grey');
@@ -20,7 +19,13 @@
         });
       },
       navigate: function(e) {
-        return this.updateNavigation(e);
+        this.setCurrentLanguage(e.selectorTarget.id.slice(4));
+        return this.updateNavigation(e.selectorTarget.id);
+      },
+      setCurrentLanguage: function(lang) {
+        this.lang = lang || this.defaultLanguage;
+        document.getElementById("nav_" + this.lang).classList.remove('grey');
+        return this.lang;
       }
     };
     NavigationController.plugins = [

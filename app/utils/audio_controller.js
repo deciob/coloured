@@ -2,8 +2,9 @@
   return define(["lodash"], function(_) {
     var AudioController;
     AudioController = function(args) {
+      this.defaultLanguage = args.defaultLanguage;
       this.audio = args.audio;
-      this.spriteMap = args.spriteMap;
+      this.conf = args.conf;
       return this;
     };
     AudioController.prototype = {
@@ -13,17 +14,20 @@
         }
       },
       resetAudio: function() {
-        this.audio.removeEventListener('timeupdate', this.onTimeUpdateP, false);
-        return this.audio.pause();
+        this.audio[this.lang].removeEventListener('timeupdate', this.onTimeUpdateP, false);
+        return this.audio[this.lang].pause();
       },
       play: function(e) {
         var currentSprite;
         this.resetAudio();
-        currentSprite = this.spriteMap[e.selectorTarget.className.slice(4)];
-        this.audio.currentTime = currentSprite.start;
+        currentSprite = this.conf[this.lang].spriteMap[e.selectorTarget.className.slice(4)];
+        this.audio[this.lang].currentTime = currentSprite.start;
         this.onTimeUpdateP = _.partialRight(this.onTimeUpdate, currentSprite);
-        this.audio.addEventListener('timeupdate', this.onTimeUpdateP, false);
-        return this.audio.play();
+        this.audio[this.lang].addEventListener('timeupdate', this.onTimeUpdateP, false);
+        return this.audio[this.lang].play();
+      },
+      setCurrentLanguage: function(lang) {
+        return this.lang = lang || this.defaultLanguage;
       }
     };
     AudioController.plugins = [

@@ -8,7 +8,7 @@ body {
   margin-left: auto;
   margin-right: auto;
 }
-/* line 38, ../../../../../../var/lib/gems/1.9.1/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/utilities/general/_clearfix.scss */
+/* line 38, ../../../../../.rvm/gems/ruby-2.0.0-p195@coloured/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/utilities/general/_clearfix.scss */
 body:after {
   content: "";
   display: table;
@@ -31,15 +31,15 @@ header .nav.grey {
   filter: url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cfilter%20id%3D%22desaturate%22%3E%3CfeColorMatrix%20type%3D%22saturate%22%20values%3D%220%22/%3E%3C/filter%3E%3C/svg%3E#desaturate);
 }
 /* line 39, ../sass/basic.scss */
-header .nav.gb {
+header .nav.english {
   background-image: url("../../app/navigation/images/gb.svg");
 }
 /* line 42, ../sass/basic.scss */
-header .nav.cl {
+header .nav.spanish {
   background-image: url("../../app/navigation/images/cl.svg");
 }
 /* line 45, ../sass/basic.scss */
-header .nav.it {
+header .nav.italian {
   background-image: url("../../app/navigation/images/it.svg");
 }
 

@@ -2,23 +2,29 @@
 
   define ["lodash"], (_) ->
 
-    NavigationController = ->
+    NavigationController = (args) ->
+      @defaultLanguage = args.defaultLanguage
       @
 
     NavigationController.prototype =
 
-      updateNavigation: (e) ->
-        targetId = e.selectorTarget.id
+      updateNavigation: (targetId) ->
         targetEl = document.getElementById(targetId)
-        currentCountry = e.selectorTarget.id[4..-1]
         _.each targetEl.parentNode.childNodes, (el) ->
           if el.nodeName == "DIV" and el.id == targetId
             el.classList.remove('grey')
           if el.nodeName == "DIV" and el.id != targetId
             el.classList.add('grey')
 
-      navigate: (e) -> 
-        @updateNavigation e
+      navigate: (e) ->
+        @setCurrentLanguage e.selectorTarget.id[4..-1]
+        @updateNavigation e.selectorTarget.id
+
+      # Initially called on wire ready.
+      setCurrentLanguage: (lang) ->
+        @lang = lang or @defaultLanguage
+        document.getElementById("nav_#{@lang}").classList.remove('grey')
+        @lang
         
     NavigationController.plugins = [module: "wire/dom"]
 

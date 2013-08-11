@@ -43,7 +43,7 @@
     # manipulation and legacy IE equivalents.
     console.log "an error happened during loading :'("
     console.log ex, ex.message
-    console.log ex.stack  if ex.stack
+    console.log ex.stack if ex.stack
     el = document.getElementById("errout")
     msg = "An error occurred while loading: " + 
       ex.message + ". See the console for more information."

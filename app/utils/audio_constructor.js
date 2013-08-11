@@ -2,7 +2,9 @@
   return define(function(require) {
     var audioConstructor;
     return audioConstructor = function(args) {
-      return new Audio(args.audioFile);
+      var audioFile;
+      audioFile = args.conf[args.language].audioFile;
+      return new Audio(audioFile);
     };
   });
 })(typeof define === "function" && define.amd ? define : function(factory) {
