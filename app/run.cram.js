@@ -2156,6 +2156,141 @@ define('poly/all', ['poly/object', 'poly/string', 'poly/date', 'poly/array', 'po
 	};
 
 });
+/** MIT License (c) copyright 2010-2013 B Cavalier & J Hann */
+
+/**
+ * curl domReady
+ *
+ * Licensed under the MIT License at:
+ * 		http://www.opensource.org/licenses/mit-license.php
+ */
+
+/**
+ * usage:
+ *  require(['ModuleA', 'curl/domReady'], function (ModuleA, domReady) {
+ * 		var a = new ModuleA();
+ * 		domReady(function () {
+ * 			document.body.appendChild(a.domNode);
+ * 		});
+ * 	});
+ *
+ * also: check out curl's domReady! plugin
+ *
+ * HT to Bryan Forbes who wrote the initial domReady code:
+ * http://www.reigndropsfall.net/
+ *
+ */
+(function (global, doc) {
+
+	var
+		readyState = 'readyState',
+		// keep these quoted so closure compiler doesn't squash them
+		readyStates = { 'loaded': 1, 'interactive': 1, 'complete': 1 },
+		callbacks = [],
+		fixReadyState = doc && typeof doc[readyState] != "string",
+		// IE needs this cuz it won't stop setTimeout if it's already queued up
+		completed = false,
+		pollerTime = 10,
+		addEvent,
+		remover,
+		removers = [],
+		pollerHandle,
+		undef;
+
+	function ready () {
+		completed = true;
+		clearTimeout(pollerHandle);
+		while (remover = removers.pop()) remover();
+		if (fixReadyState) {
+			doc[readyState] = "complete";
+		}
+		// callback all queued callbacks
+		var cb;
+		while ((cb = callbacks.shift())) {
+			cb();
+		}
+	}
+
+	var testEl;
+	function isDomManipulable () {
+		// question: implement Diego Perini's IEContentLoaded instead?
+		// answer: The current impl seems more future-proof rather than a
+		// non-standard method (doScroll). i don't care if the rest of the js
+		// world is using doScroll! They can have fun repairing their libs when
+		// the IE team removes doScroll in IE 13. :)
+		if (!doc.body) return false; // no body? we're definitely not ready!
+		if (!testEl) testEl = doc.createTextNode('');
+		try {
+			// webkit needs to use body. doc
+			doc.body.removeChild(doc.body.appendChild(testEl));
+			testEl = undef;
+			return true;
+		}
+		catch (ex) {
+			return false;
+		}
+	}
+
+	function checkDOMReady (e) {
+		var isReady;
+		// all browsers except IE will be ready when readyState == 'interactive'
+		// so we also must check for document.body
+		isReady = readyStates[doc[readyState]] && isDomManipulable();
+		if (!completed && isReady) {
+			ready();
+		}
+		return isReady;
+	}
+
+	function poller () {
+		checkDOMReady();
+		if (!completed) {
+			pollerHandle = setTimeout(poller, pollerTime);
+		}
+	}
+
+	// select the correct event listener function. all of our supported
+	// browsers will use one of these
+	if ('addEventListener' in global) {
+		addEvent = function (node, event) {
+			node.addEventListener(event, checkDOMReady, false);
+			return function () { node.removeEventListener(event, checkDOMReady, false); };
+		};
+	}
+	else {
+		addEvent = function (node, event) {
+			node.attachEvent('on' + event, checkDOMReady);
+			return function () { node.detachEvent(event, checkDOMReady); };
+		};
+	}
+
+	if (doc) {
+		if (!checkDOMReady()) {
+			// add event listeners and collect remover functions
+			removers = [
+				addEvent(global, 'load'),
+				addEvent(doc, 'readystatechange'),
+				addEvent(global, 'DOMContentLoaded')
+			];
+			// additionally, poll for readystate
+			pollerHandle = setTimeout(poller, pollerTime);
+		}
+	}
+
+	define('curl/domReady', function () {
+
+		// this is simply a callback, but make it look like a promise
+		function domReady (cb) {
+			if (completed) cb(); else callbacks.push(cb);
+		}
+		domReady['then'] = domReady;
+		domReady['amd'] = true;
+
+		return domReady;
+
+	});
+
+}(this, this.document));
 /** @license MIT License (c) copyright 2011-2013 original author or authors */
 
 /**
@@ -2993,141 +3128,6 @@ define('when/when', function () {
 	typeof define === 'function' && define.amd ? define : function (factory) { module.exports = factory(); },
 	this
 );
-/** MIT License (c) copyright 2010-2013 B Cavalier & J Hann */
-
-/**
- * curl domReady
- *
- * Licensed under the MIT License at:
- * 		http://www.opensource.org/licenses/mit-license.php
- */
-
-/**
- * usage:
- *  require(['ModuleA', 'curl/domReady'], function (ModuleA, domReady) {
- * 		var a = new ModuleA();
- * 		domReady(function () {
- * 			document.body.appendChild(a.domNode);
- * 		});
- * 	});
- *
- * also: check out curl's domReady! plugin
- *
- * HT to Bryan Forbes who wrote the initial domReady code:
- * http://www.reigndropsfall.net/
- *
- */
-(function (global, doc) {
-
-	var
-		readyState = 'readyState',
-		// keep these quoted so closure compiler doesn't squash them
-		readyStates = { 'loaded': 1, 'interactive': 1, 'complete': 1 },
-		callbacks = [],
-		fixReadyState = doc && typeof doc[readyState] != "string",
-		// IE needs this cuz it won't stop setTimeout if it's already queued up
-		completed = false,
-		pollerTime = 10,
-		addEvent,
-		remover,
-		removers = [],
-		pollerHandle,
-		undef;
-
-	function ready () {
-		completed = true;
-		clearTimeout(pollerHandle);
-		while (remover = removers.pop()) remover();
-		if (fixReadyState) {
-			doc[readyState] = "complete";
-		}
-		// callback all queued callbacks
-		var cb;
-		while ((cb = callbacks.shift())) {
-			cb();
-		}
-	}
-
-	var testEl;
-	function isDomManipulable () {
-		// question: implement Diego Perini's IEContentLoaded instead?
-		// answer: The current impl seems more future-proof rather than a
-		// non-standard method (doScroll). i don't care if the rest of the js
-		// world is using doScroll! They can have fun repairing their libs when
-		// the IE team removes doScroll in IE 13. :)
-		if (!doc.body) return false; // no body? we're definitely not ready!
-		if (!testEl) testEl = doc.createTextNode('');
-		try {
-			// webkit needs to use body. doc
-			doc.body.removeChild(doc.body.appendChild(testEl));
-			testEl = undef;
-			return true;
-		}
-		catch (ex) {
-			return false;
-		}
-	}
-
-	function checkDOMReady (e) {
-		var isReady;
-		// all browsers except IE will be ready when readyState == 'interactive'
-		// so we also must check for document.body
-		isReady = readyStates[doc[readyState]] && isDomManipulable();
-		if (!completed && isReady) {
-			ready();
-		}
-		return isReady;
-	}
-
-	function poller () {
-		checkDOMReady();
-		if (!completed) {
-			pollerHandle = setTimeout(poller, pollerTime);
-		}
-	}
-
-	// select the correct event listener function. all of our supported
-	// browsers will use one of these
-	if ('addEventListener' in global) {
-		addEvent = function (node, event) {
-			node.addEventListener(event, checkDOMReady, false);
-			return function () { node.removeEventListener(event, checkDOMReady, false); };
-		};
-	}
-	else {
-		addEvent = function (node, event) {
-			node.attachEvent('on' + event, checkDOMReady);
-			return function () { node.detachEvent(event, checkDOMReady); };
-		};
-	}
-
-	if (doc) {
-		if (!checkDOMReady()) {
-			// add event listeners and collect remover functions
-			removers = [
-				addEvent(global, 'load'),
-				addEvent(doc, 'readystatechange'),
-				addEvent(global, 'DOMContentLoaded')
-			];
-			// additionally, poll for readystate
-			pollerHandle = setTimeout(poller, pollerTime);
-		}
-	}
-
-	define('curl/domReady', function () {
-
-		// this is simply a callback, but make it look like a promise
-		function domReady (cb) {
-			if (completed) cb(); else callbacks.push(cb);
-		}
-		domReady['then'] = domReady;
-		domReady['amd'] = true;
-
-		return domReady;
-
-	});
-
-}(this, this.document));
 
 ;define('curl/plugin/_fetchText', function () {
 
@@ -3189,6 +3189,40 @@ define('when/when', function () {
  */
 
 (function(define){
+define('wire/lib/object', function () {
+"use strict";
+
+	return {
+		isObject: isObject,
+		inherit: inherit
+	};
+
+	function isObject(it) {
+		// In IE7 tos.call(null) is '[object Object]'
+		// so we need to check to see if 'it' is
+		// even set
+		return it && Object.prototype.toString.call(it) == '[object Object]';
+	}
+
+	function inherit(parent) {
+		return parent ? Object.create(parent) : {};
+	}
+
+});
+})(typeof define == 'function'
+	// AMD
+	? define
+	// CommonJS
+	: function(factory) { module.exports = factory(); }
+);
+/** @license MIT License (c) copyright B Cavalier & J Hann */
+
+/**
+ * Licensed under the MIT License at:
+ * http://www.opensource.org/licenses/mit-license.php
+ */
+
+(function(define){
 define('wire/lib/array', function () {
 "use strict";
 
@@ -3211,40 +3245,6 @@ define('wire/lib/array', function () {
 
 	function fromArguments(args, index) {
 		return slice.call(args, index||0);
-	}
-
-});
-})(typeof define == 'function'
-	// AMD
-	? define
-	// CommonJS
-	: function(factory) { module.exports = factory(); }
-);
-/** @license MIT License (c) copyright B Cavalier & J Hann */
-
-/**
- * Licensed under the MIT License at:
- * http://www.opensource.org/licenses/mit-license.php
- */
-
-(function(define){
-define('wire/lib/object', function () {
-"use strict";
-
-	return {
-		isObject: isObject,
-		inherit: inherit
-	};
-
-	function isObject(it) {
-		// In IE7 tos.call(null) is '[object Object]'
-		// so we need to check to see if 'it' is
-		// even set
-		return it && Object.prototype.toString.call(it) == '[object Object]';
-	}
-
-	function inherit(parent) {
-		return parent ? Object.create(parent) : {};
 	}
 
 });
@@ -3438,6 +3438,40 @@ define('wire/lib/invoker', ['require'], function (require) {
  * http://www.opensource.org/licenses/mit-license.php
  */
 
+/**
+ * Abstract the platform's loader
+ * @type {Function}
+ * @param require {Function} platform-specific require
+ * @return {Function}
+ */
+if(typeof define == 'function' && define.amd) {
+	// AMD
+	define('wire/lib/moduleLoader', ['when/when'], function (when) {
+
+		return function createModuleLoader(require) {
+			return function(moduleId) {
+				var deferred = when.defer();
+				require([moduleId], deferred.resolve, deferred.reject);
+				return deferred.promise;
+			};
+		};
+
+	});
+
+} else {
+	// CommonJS
+	module.exports = function createModuleLoader(require) {
+		return require;
+	};
+
+}
+/** @license MIT License (c) copyright B Cavalier & J Hann */
+
+/**
+ * Licensed under the MIT License at:
+ * http://www.opensource.org/licenses/mit-license.php
+ */
+
 (function(define){
 define('wire/lib/async', ['require', 'when/when', 'wire/lib/array'], function (require, $cram_r0, $cram_r1) {
 	"use strict";
@@ -3499,40 +3533,6 @@ define('wire/lib/async', ['require', 'when/when', 'wire/lib/array'], function (r
 
 });
 })(typeof define == 'function' && define.amd ? define : function(factory) { module.exports = factory(require); });
-/** @license MIT License (c) copyright B Cavalier & J Hann */
-
-/**
- * Licensed under the MIT License at:
- * http://www.opensource.org/licenses/mit-license.php
- */
-
-/**
- * Abstract the platform's loader
- * @type {Function}
- * @param require {Function} platform-specific require
- * @return {Function}
- */
-if(typeof define == 'function' && define.amd) {
-	// AMD
-	define('wire/lib/moduleLoader', ['when/when'], function (when) {
-
-		return function createModuleLoader(require) {
-			return function(moduleId) {
-				var deferred = when.defer();
-				require([moduleId], deferred.resolve, deferred.reject);
-				return deferred.promise;
-			};
-		};
-
-	});
-
-} else {
-	// CommonJS
-	module.exports = function createModuleLoader(require) {
-		return require;
-	};
-
-}
 /** @license MIT License (c) copyright B Cavalier & J Hann */
 
 /**
