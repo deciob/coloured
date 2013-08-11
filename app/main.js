@@ -27,7 +27,8 @@ define({
     },
     on: {
       navigation: {
-        'click:div.nav': 'navigate'
+        'click:div.nav': 'navigate',
+        'touchstart:div.nav': 'navigate'
       }
     },
     ready: "setCurrentLanguage",
@@ -96,7 +97,8 @@ define({
     },
     on: {
       colours: {
-        'click:div.box': 'play'
+        'click:div.box': 'play',
+        'touchstart:div.box': 'play'
       }
     }
   },

@@ -25,6 +25,8 @@ define
     on:
       navigation: 
         'click:div.nav': 'navigate'
+        'touchstart:div.nav': 'navigate'
+
     ready: "setCurrentLanguage"
     before:
       setCurrentLanguage: 'audioController.resetAudio'
@@ -69,7 +71,7 @@ define
     on:
       colours: 
         'click:div.box': 'play'
-        #'touchstart:div.box': 'play'
+        'touchstart:div.box': 'play'
 
   
   # Create a simple view by rendering html, replacing some i18n strings
