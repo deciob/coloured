@@ -6,26 +6,27 @@
       return this;
     };
     NavigationController.prototype = {
-      updateNavigation: function(targetId) {
-        var targetEl;
-        targetEl = document.getElementById(targetId);
-        return _.each(targetEl.parentNode.childNodes, function(el) {
-          if (el.nodeName === "DIV" && el.id === targetId) {
+      initNavigation: function(lang) {
+        return document.getElementById("nav_" + lang).classList.remove('grey');
+      },
+      updateNavigation: function(target, targetId) {
+        return _.each(target.parentNode.childNodes, function(el) {
+          if (el.nodeName === "BUTTON" && el.id === targetId) {
             el.classList.remove('grey');
           }
-          if (el.nodeName === "DIV" && el.id !== targetId) {
+          if (el.nodeName === "BUTTON" && el.id !== targetId) {
             return el.classList.add('grey');
           }
         });
       },
       navigate: function(e) {
-        this.setCurrentLanguage(e.selectorTarget.id.slice(4));
-        return this.updateNavigation(e.selectorTarget.id);
+        var id;
+        id = e.selectorTarget.id;
+        this.setCurrentLanguage(id.slice(4));
+        return this.updateNavigation(e.selectorTarget, id);
       },
       setCurrentLanguage: function(lang) {
-        this.lang = lang || this.defaultLanguage;
-        document.getElementById("nav_" + this.lang).classList.remove('grey');
-        return this.lang;
+        return this.lang = lang || this.defaultLanguage;
       }
     };
     NavigationController.plugins = [

@@ -21,30 +21,44 @@ section {
 
 
 
-header {
+header div.nav {
 
-  .nav { 
-    display: inline-block;
-    width: 120px;
-    height: 80px;
-    width: 159px;
-    background-size: 159px 80px;
-    margin: 3em 1em;
+  button {
+
+    padding: 2px;
+    margin: 2px;
+
+    border: 1px solid #bbb;
+    border-radius: 3px;
+
+    div { 
+      display: inline-block;
+      width: 80px;
+      height: 80px;
+      background-size: 80px 80px;
+      margin: 0;
+    }
+  
   }
-  .nav.grey {
-    filter: gray;
-    -webkit-filter: grayscale(1);
-    filter:url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cfilter%20id%3D%22desaturate%22%3E%3CfeColorMatrix%20type%3D%22saturate%22%20values%3D%220%22/%3E%3C/filter%3E%3C/svg%3E#desaturate);
+
+  button.grey {
+    div {
+      filter: gray;
+      -webkit-filter: grayscale(1);
+      filter:url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cfilter%20id%3D%22desaturate%22%3E%3CfeColorMatrix%20type%3D%22saturate%22%20values%3D%220%22/%3E%3C/filter%3E%3C/svg%3E#desaturate);
+    }
   }
-  .nav.english {
-    background-image: url("../../app/navigation/images/gb.svg");
+
+  button.english div {
+    background-image: url("../../app/navigation/images/gb-square.svg");
   }
-  .nav.spanish {
-    background-image: url("../../app/navigation/images/cl.svg");
+  button.spanish div {
+    background-image: url("../../app/navigation/images/cl-square.svg");
   }
-  .nav.italian {
-    background-image: url("../../app/navigation/images/it.svg");
+  button.italian div {
+    background-image: url("../../app/navigation/images/it-square.svg");
   }
+
 }
 
 .main { 

@@ -8,23 +8,24 @@
 
     NavigationController.prototype =
 
-      updateNavigation: (targetId) ->
-        targetEl = document.getElementById(targetId)
-        _.each targetEl.parentNode.childNodes, (el) ->
-          if el.nodeName == "DIV" and el.id == targetId
+      initNavigation: (lang) ->
+        document.getElementById("nav_#{lang}").classList.remove('grey')
+
+      updateNavigation: (target, targetId) ->
+        _.each target.parentNode.childNodes, (el) ->
+          if el.nodeName == "BUTTON" and el.id == targetId
             el.classList.remove('grey')
-          if el.nodeName == "DIV" and el.id != targetId
+          if el.nodeName == "BUTTON" and el.id != targetId
             el.classList.add('grey')
 
       navigate: (e) ->
-        @setCurrentLanguage e.selectorTarget.id[4..-1]
-        @updateNavigation e.selectorTarget.id
+        id = e.selectorTarget.id
+        @setCurrentLanguage id[4..-1]
+        @updateNavigation e.selectorTarget, id
 
       # Initially called on wire ready.
       setCurrentLanguage: (lang) ->
         @lang = lang or @defaultLanguage
-        document.getElementById("nav_#{@lang}").classList.remove('grey')
-        @lang
         
     NavigationController.plugins = [module: "wire/dom"]
 

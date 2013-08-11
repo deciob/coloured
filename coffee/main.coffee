@@ -24,14 +24,16 @@ define
         defaultLanguage: $ref: "defaultLanguage"
     on:
       navigation: 
-        'click:div.nav': 'navigate'
-        'touchstart:div.nav': 'navigate'
+        'click:div.nav button': 'navigate'
+        #'touchstart:div.nav': 'navigate'
 
-    ready: "setCurrentLanguage"
+    ready: 
+      setCurrentLanguage: []
     before:
       setCurrentLanguage: 'audioController.resetAudio'
     after:
       setCurrentLanguage: 'audioController.setCurrentLanguage'
+      setCurrentLanguage: 'navigationController.initNavigation'
 
   # It simply returns an HTML5 new Audio instance
   audioConstructurEnglish:
@@ -71,7 +73,7 @@ define
     on:
       colours: 
         'click:div.box': 'play'
-        'touchstart:div.box': 'play'
+        #'touchstart:div.box': 'play'
 
   
   # Create a simple view by rendering html, replacing some i18n strings

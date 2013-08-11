@@ -27,16 +27,18 @@ define({
     },
     on: {
       navigation: {
-        'click:div.nav': 'navigate',
-        'touchstart:div.nav': 'navigate'
+        'click:div.nav button': 'navigate'
       }
     },
-    ready: "setCurrentLanguage",
+    ready: {
+      setCurrentLanguage: []
+    },
     before: {
       setCurrentLanguage: 'audioController.resetAudio'
     },
     after: {
-      setCurrentLanguage: 'audioController.setCurrentLanguage'
+      setCurrentLanguage: 'audioController.setCurrentLanguage',
+      setCurrentLanguage: 'navigationController.initNavigation'
     }
   },
   audioConstructurEnglish: {
@@ -97,8 +99,7 @@ define({
     },
     on: {
       colours: {
-        'click:div.box': 'play',
-        'touchstart:div.box': 'play'
+        'click:div.box': 'play'
       }
     }
   },

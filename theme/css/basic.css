@@ -16,34 +16,40 @@ body:after {
 }
 
 /* line 26, ../sass/basic.scss */
-header .nav {
-  display: inline-block;
-  width: 120px;
-  height: 80px;
-  width: 159px;
-  background-size: 159px 80px;
-  margin: 3em 1em;
+header div.nav button {
+  padding: 2px;
+  margin: 2px;
+  border: 1px solid #bbb;
+  border-radius: 3px;
 }
 /* line 34, ../sass/basic.scss */
-header .nav.grey {
+header div.nav button div {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+  background-size: 80px 80px;
+  margin: 0;
+}
+/* line 45, ../sass/basic.scss */
+header div.nav button.grey div {
   filter: gray;
   -webkit-filter: grayscale(1);
   filter: url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cfilter%20id%3D%22desaturate%22%3E%3CfeColorMatrix%20type%3D%22saturate%22%20values%3D%220%22/%3E%3C/filter%3E%3C/svg%3E#desaturate);
 }
-/* line 39, ../sass/basic.scss */
-header .nav.english {
-  background-image: url("../../app/navigation/images/gb.svg");
+/* line 52, ../sass/basic.scss */
+header div.nav button.english div {
+  background-image: url("../../app/navigation/images/gb-square.svg");
 }
-/* line 42, ../sass/basic.scss */
-header .nav.spanish {
-  background-image: url("../../app/navigation/images/cl.svg");
+/* line 55, ../sass/basic.scss */
+header div.nav button.spanish div {
+  background-image: url("../../app/navigation/images/cl-square.svg");
 }
-/* line 45, ../sass/basic.scss */
-header .nav.italian {
-  background-image: url("../../app/navigation/images/it.svg");
+/* line 58, ../sass/basic.scss */
+header div.nav button.italian div {
+  background-image: url("../../app/navigation/images/it-square.svg");
 }
 
-/* line 53, ../sass/basic.scss */
+/* line 67, ../sass/basic.scss */
 .main .box {
   width: 23.72881%;
   float: left;
