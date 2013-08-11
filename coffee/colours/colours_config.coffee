@@ -60,7 +60,7 @@
           length: 1.1
         blue:
           start: 6.5
-          length: 1
+          length: 0.6
         yellow:
           start: 7.6
           length: 0.9
