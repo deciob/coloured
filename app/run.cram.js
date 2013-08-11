@@ -12,7 +12,7 @@
     el = void 0;
     msg = void 0;
     console.log("an error happened during loading :'(");
-    console.log(ex.message);
+    console.log(ex, ex.message);
     if (ex.stack) {
       console.log(ex.stack);
     }
@@ -36,6 +36,9 @@
       {
         name: "colours",
         location: "app/colours"
+      }, {
+        name: "navigation",
+        location: "app/navigation"
       }, {
         name: "theme",
         location: "theme/css",

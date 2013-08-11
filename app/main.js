@@ -2,12 +2,49 @@ define({
   theme: {
     module: 'theme/basic.css'
   },
-  controller: {
-    create: 'app/colours/colours_controller',
-    properties: {
-      audioSprite: {
-        $ref: 'dom.first!audio',
-        at: 'colours'
+  navigation: {
+    render: {
+      template: {
+        module: "text!navigation/navigation_template.html"
+      }
+    },
+    insert: {
+      at: "dom.first!header"
+    }
+  },
+  coloursConf: {
+    module: "app/colours/colours_config"
+  },
+  navigationController: {
+    create: {
+      module: 'app/navigation/navigation_controller'
+    },
+    on: {
+      navigation: {
+        'click:div.nav': 'navigate'
+      }
+    }
+  },
+  audioConstructur: {
+    create: {
+      module: 'app/utils/audio_constructor',
+      args: {
+        audioFile: {
+          $ref: "coloursConf.audioFile"
+        }
+      }
+    }
+  },
+  audioController: {
+    create: {
+      module: 'app/utils/audio_controller',
+      args: {
+        audio: {
+          $ref: "audioConstructur"
+        },
+        spriteMap: {
+          $ref: "coloursConf.spriteMap"
+        }
       }
     },
     on: {
@@ -26,7 +63,7 @@ define({
       }
     },
     insert: {
-      at: "dom.first!body"
+      at: "dom.first!section"
     }
   },
   plugins: [

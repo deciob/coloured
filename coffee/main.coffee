@@ -5,14 +5,39 @@ define
   theme: 
     module: 'theme/basic.css'
 
-  controller:
-    create: 'app/colours/colours_controller'
-    #args: ['lodash']
+  navigation:
+    render:
+      template:
+        module: "text!navigation/navigation_template.html"
+    insert:
+      at: "dom.first!header"
 
-    properties:
-      audioSprite: {$ref: 'dom.first!audio', at: 'colours'}
-    #init: "init"
-      #init: [] # Array of arguments to pass to the init function
+  coloursConf:
+    module: "app/colours/colours_config"
+
+  navigationController:
+    create: 
+      module: 'app/navigation/navigation_controller'
+    on:
+      navigation: 
+        'click:div.nav': 'navigate'
+        #'touchstart:div.box': 'play'
+
+  # It simply returns an HTML5 new Audio instance
+  audioConstructur:
+    create:
+      module: 'app/utils/audio_constructor'
+      args:
+        audioFile: 
+          $ref: "coloursConf.audioFile"
+
+  audioController:
+    create: 
+      module: 'app/utils/audio_controller'
+      args:
+        audio: $ref: "audioConstructur"
+        spriteMap: 
+          $ref: "coloursConf.spriteMap"
     on:
       colours: 
         'click:div.box': 'play'
@@ -29,7 +54,7 @@ define
         module: "css!colours/colours_structure.css"
 
     insert:
-      at: "dom.first!body"
+      at: "dom.first!section"
 
     #on:
     #  # Whenever the user clicks a link or a <button>
