@@ -14,8 +14,10 @@
         }
       },
       resetAudio: function() {
-        this.audio[this.lang].removeEventListener('timeupdate', this.onTimeUpdateP, false);
-        return this.audio[this.lang].pause();
+        var lang;
+        lang = this.lang || this.defaultLanguage;
+        this.audio[lang].removeEventListener('timeupdate', this.onTimeUpdateP, false);
+        return this.audio[lang].pause();
       },
       play: function(e) {
         var currentSprite;

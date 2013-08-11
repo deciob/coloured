@@ -31,6 +31,9 @@ define({
       }
     },
     ready: "setCurrentLanguage",
+    before: {
+      setCurrentLanguage: 'audioController.resetAudio'
+    },
     after: {
       setCurrentLanguage: 'audioController.setCurrentLanguage'
     }

@@ -26,6 +26,8 @@ define
       navigation: 
         'click:div.nav': 'navigate'
     ready: "setCurrentLanguage"
+    before:
+      setCurrentLanguage: 'audioController.resetAudio'
     after:
       setCurrentLanguage: 'audioController.setCurrentLanguage'
 

@@ -15,8 +15,9 @@
           @pause()
 
       resetAudio: ->
-        @audio[@lang].removeEventListener 'timeupdate', @onTimeUpdateP, false
-        @audio[@lang].pause()
+        lang = @lang or @defaultLanguage
+        @audio[lang].removeEventListener 'timeupdate', @onTimeUpdateP, false
+        @audio[lang].pause()
 
       play: (e) ->
         @resetAudio()
