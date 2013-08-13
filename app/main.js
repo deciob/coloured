@@ -5,7 +5,7 @@ define({
   coloursConf: {
     module: "app/colours/colours_config"
   },
-  defaultLanguage: "english",
+  defaultLanguage: "italian",
   navigation: {
     render: {
       template: {
