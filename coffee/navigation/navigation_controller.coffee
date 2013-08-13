@@ -1,6 +1,6 @@
 ((define) ->
 
-  define ["lodash", "hammer"], (_, Hammer) ->
+  define ["lodash", "fast_button"], (_, FastButton) ->
 
     NavigationController = (args) ->
       @defaultLanguage = args.defaultLanguage
@@ -13,7 +13,8 @@
         activeNode = document.getElementById("nav_#{lang}")
         activeNode.classList.remove('grey')
         #btns = activeNode.parentNode.getElementsByTagName('button')
-        Hammer(activeNode.parentNode).on("tap", (e) -> self.navigate e) 
+        #Hammer(activeNode.parentNode).on("tap", (e) -> self.navigate e)
+        new FastButton(activeNode.parentNode, (e) -> self.navigate e)
         
       updateNavigation: (target, targetId) ->
         _.each target.parentNode.childNodes, (el) ->

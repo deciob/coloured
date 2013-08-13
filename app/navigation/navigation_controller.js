@@ -1,5 +1,5 @@
 (function(define) {
-  return define(["lodash", "hammer"], function(_, Hammer) {
+  return define(["lodash", "fast_button"], function(_, FastButton) {
     var NavigationController;
     NavigationController = function(args) {
       this.defaultLanguage = args.defaultLanguage;
@@ -11,7 +11,7 @@
         self = this;
         activeNode = document.getElementById("nav_" + lang);
         activeNode.classList.remove('grey');
-        return Hammer(activeNode.parentNode).on("tap", function(e) {
+        return new FastButton(activeNode.parentNode, function(e) {
           return self.navigate(e);
         });
       },

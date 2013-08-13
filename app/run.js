@@ -32,7 +32,7 @@
   config = {
     baseUrl: './',
     paths: {
-      'hammer': "lib/hammer"
+      'fast_button': "app/utils/fast_button"
     },
     packages: [
       {
