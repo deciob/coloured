@@ -1,6 +1,6 @@
 ((define) ->
 
-  define ["lodash"], (_) ->
+  define ["lodash", "hammer"], (_, Hammer) ->
 
     NavigationController = (args) ->
       @defaultLanguage = args.defaultLanguage
@@ -9,8 +9,12 @@
     NavigationController.prototype =
 
       initNavigation: (lang) ->
-        document.getElementById("nav_#{lang}").classList.remove('grey')
-
+        self = @
+        activeNode = document.getElementById("nav_#{lang}")
+        activeNode.classList.remove('grey')
+        #btns = activeNode.parentNode.getElementsByTagName('button')
+        Hammer(activeNode.parentNode).on("tap", (e) -> self.navigate e) 
+        
       updateNavigation: (target, targetId) ->
         _.each target.parentNode.childNodes, (el) ->
           if el.nodeName == "BUTTON" and el.id == targetId
@@ -19,9 +23,9 @@
             el.classList.add('grey')
 
       navigate: (e) ->
-        id = e.selectorTarget.id
+        id = e.target.parentNode.id
         @setCurrentLanguage id[4..-1]
-        @updateNavigation e.selectorTarget, id
+        @updateNavigation e.target.parentNode, id
 
       # Initially called on wire ready.
       setCurrentLanguage: (lang) ->

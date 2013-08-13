@@ -62,9 +62,9 @@
   config =
     baseUrl: './'
     ,
-    #paths:
-    #  'audio_constructor': "app/utils/audio_constructor"
-    #,
+    paths:
+      'hammer': "lib/hammer"
+    ,
     packages: [
       name: "colours"
       location: "app/colours"

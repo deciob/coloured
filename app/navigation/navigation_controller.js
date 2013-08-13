@@ -1,5 +1,5 @@
 (function(define) {
-  return define(["lodash"], function(_) {
+  return define(["lodash", "hammer"], function(_, Hammer) {
     var NavigationController;
     NavigationController = function(args) {
       this.defaultLanguage = args.defaultLanguage;
@@ -7,7 +7,13 @@
     };
     NavigationController.prototype = {
       initNavigation: function(lang) {
-        return document.getElementById("nav_" + lang).classList.remove('grey');
+        var activeNode, self;
+        self = this;
+        activeNode = document.getElementById("nav_" + lang);
+        activeNode.classList.remove('grey');
+        return Hammer(activeNode.parentNode).on("tap", function(e) {
+          return self.navigate(e);
+        });
       },
       updateNavigation: function(target, targetId) {
         return _.each(target.parentNode.childNodes, function(el) {
@@ -21,9 +27,9 @@
       },
       navigate: function(e) {
         var id;
-        id = e.selectorTarget.id;
+        id = e.target.parentNode.id;
         this.setCurrentLanguage(id.slice(4));
-        return this.updateNavigation(e.selectorTarget, id);
+        return this.updateNavigation(e.target.parentNode, id);
       },
       setCurrentLanguage: function(lang) {
         return this.lang = lang || this.defaultLanguage;

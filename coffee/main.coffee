@@ -22,10 +22,10 @@ define
       module: 'app/navigation/navigation_controller'
       args:
         defaultLanguage: $ref: "defaultLanguage"
-    on:
-      navigation: 
-        'click:div.nav button': 'navigate'
-        #'touchstart:div.nav': 'navigate'
+    #on:
+    #  navigation: 
+    #    'click:div.nav button': 'navigate'
+    #    #'touchstart:div.nav': 'navigate'
 
     ready: 
       setCurrentLanguage: []
@@ -34,6 +34,7 @@ define
       setCurrentLanguage: 'audioController.resetAudio'
     after:
       setCurrentLanguage: 'audioController.setCurrentLanguage'
+      #navigate: 'audioController.setCurrentLanguage'
 
   # It simply returns an HTML5 new Audio instance
   audioConstructurEnglish:

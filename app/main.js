@@ -25,11 +25,6 @@ define({
         }
       }
     },
-    on: {
-      navigation: {
-        'click:div.nav button': 'navigate'
-      }
-    },
     ready: {
       setCurrentLanguage: [],
       initNavigation: [

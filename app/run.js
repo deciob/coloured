@@ -31,6 +31,9 @@
   };
   config = {
     baseUrl: './',
+    paths: {
+      'hammer': "lib/hammer"
+    },
     packages: [
       {
         name: "colours",
