@@ -44,26 +44,26 @@
           start: 8.3
           length: 1
     spanish:
-      audioFile: "app/colours/audio/colores-es.ogg"
+      audioFile: "app/colours/audio/colores-es-long.ogg"
       spriteMap:
         red:
-          start: 0.6
-          length: 0.9
+          start: 0.4
+          length: 1.4
         orange:
-          start: 1.9
-          length: 1.3
+          start: 2.1
+          length: 1.6
         green:
-          start: 3.5
-          length: 1.1
+          start: 4.1
+          length: 1.6
         purple:
-          start: 4.9
-          length: 1.1
+          start: 6
+          length: 1.6
         blue:
-          start: 6.5
-          length: 0.6
+          start: 7.9
+          length: 1.6
         yellow:
-          start: 7.6
-          length: 0.9
+          start: 9.9
+          length: 1.4
 
       
 )(if typeof define is "function" and define.amd then define else (factory) ->
