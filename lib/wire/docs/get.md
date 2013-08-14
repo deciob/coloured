@@ -28,7 +28,7 @@ Wire.js requires an **AMD compatible loader** and an **ES5 environment** when ru
 Download each of the following and arrange into your project:
 
 1. [wire](https://github.com/cujojs/wire/tags)
-1. [when](https://github.com/cujojs/when/tags) >= 1.5.0 (including 2.0.x for wire 0.9.3)
+1. [when](https://github.com/cujojs/when/tags) >= 1.5.0
 1. [meld](https://github.com/cujojs/meld/tags) >= 1.0.0
 
 # Other libraries
@@ -41,6 +41,6 @@ To use curl as your AMD loader, wire.js 0.9.x requires [curl](https://github.com
 
 ## Getting poly
 
-To support non-ES5 legacy browsers, wire.js 0.9.x requires [poly](https://github.com/cujojs/poly) 0.5.0 or higher.  You can [clone](https://github.com/cujojs/poly) or [download](https://github.com/cujojs/poly/tags) poly into your project, or install it via yeoman/bower:
+To support non-ES5 legacy browsers, wire.js requires [poly](https://github.com/cujojs/poly) 0.5.0 or higher.  You can [clone](https://github.com/cujojs/poly) or [download](https://github.com/cujojs/poly/tags) poly into your project, or install it via yeoman/bower:
 
 `yeoman instal poly` *or* `bower install poly`

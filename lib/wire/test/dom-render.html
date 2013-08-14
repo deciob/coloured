@@ -28,10 +28,8 @@
 			var wired, dfds = [], undef;
 
 			wired = wire({
-				plugins: [
-//					{ module: 'wire/debug' },
-					{ module: 'wire/dom' },
-					{ module: 'wire/dom/render' }
+				plugins: ['wire/debug',
+                    'wire/dom', 'wire/dom/render'
 				],
 				node1: {
 					create: {
@@ -39,7 +37,7 @@
 						args: [
 							{ module: 'template-simple' },
 							{},
-							{ $ref: 'dom!node1' }
+							{ $ref: 'id!node1' }
 						]
 					}
 				},
@@ -49,7 +47,7 @@
 						args: [
 							{ module: 'template-with-root-attributes' },
 							{},
-							{ $ref: 'dom!node2' }
+							{ $ref: 'id!node2' }
 						]
 					}
 				},
@@ -59,7 +57,7 @@
 						args: [
 							{ module: 'template-with-children' },
 							{},
-							{ $ref: 'dom!node3' }
+							{ $ref: 'id!node3' }
 						]
 					}
 				},
@@ -69,7 +67,7 @@
 						args: [
 							{ module: 'template-with-strict-parent' },
 							{},
-							{ $ref: 'dom!node4' }
+							{ $ref: 'id!node4' }
 						]
 					}
 				},
@@ -77,7 +75,7 @@
 					render: {
 						template: { module: 'template-from-plugin' },
 						replace: replace,
-						at: { $ref: 'dom!node5' }
+						at: { $ref: 'id!node5' }
 					}
 				},
 				node6: {
@@ -89,7 +87,7 @@
 								content: 'some content'
 							}
 						},
-						at: { $ref: 'dom!node6' }
+						at: { $ref: 'id!node6' }
 					}
 				},
 				whitespace: {
