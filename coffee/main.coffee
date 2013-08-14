@@ -29,7 +29,7 @@ define
 
     ready: 
       setCurrentLanguage: []
-      initNavigation: [$ref: "defaultLanguage"]
+      initNavigation: [{$ref: "defaultLanguage"}, {$ref: "navigation"}]
     before:
       setCurrentLanguage: 'audioController.resetAudio'
     after:

@@ -8,12 +8,11 @@
 
     NavigationController.prototype =
 
-      initNavigation: (lang) ->
+      initNavigation: (lang, navigation) ->
         self = @
-        activeNode = document.getElementById("nav_#{lang}")
+        str = 'button[id=' + "nav_#{lang}" + ']'
+        activeNode = navigation.querySelector(str)
         activeNode.classList.remove('grey')
-        #btns = activeNode.parentNode.getElementsByTagName('button')
-        #Hammer(activeNode.parentNode).on("tap", (e) -> self.navigate e)
         new FastButton(activeNode.parentNode, (e) -> self.navigate e)
         
       updateNavigation: (target, targetId) ->

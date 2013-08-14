@@ -6,10 +6,11 @@
       return this;
     };
     NavigationController.prototype = {
-      initNavigation: function(lang) {
-        var activeNode, self;
+      initNavigation: function(lang, navigation) {
+        var activeNode, self, str;
         self = this;
-        activeNode = document.getElementById("nav_" + lang);
+        str = 'button[id=' + ("nav_" + lang) + ']';
+        activeNode = navigation.querySelector(str);
         activeNode.classList.remove('grey');
         return new FastButton(activeNode.parentNode, function(e) {
           return self.navigate(e);

@@ -30,6 +30,8 @@ define({
       initNavigation: [
         {
           $ref: "defaultLanguage"
+        }, {
+          $ref: "navigation"
         }
       ]
     },
