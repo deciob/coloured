@@ -25,15 +25,17 @@ define({
         }
       }
     },
+    properties: {
+      defaultLanguage: {
+        $ref: "defaultLanguage"
+      },
+      el: {
+        $ref: "navigation"
+      }
+    },
     ready: {
       setCurrentLanguage: [],
-      initNavigation: [
-        {
-          $ref: "defaultLanguage"
-        }, {
-          $ref: "navigation"
-        }
-      ]
+      initNavigation: []
     },
     before: {
       setCurrentLanguage: 'audioController.resetAudio'

@@ -6,14 +6,14 @@
       return this;
     };
     NavigationController.prototype = {
-      initNavigation: function(lang, navigation) {
-        var activeNode, self, str;
-        self = this;
-        str = 'button[id=' + ("nav_" + lang) + ']';
-        activeNode = navigation.querySelector(str);
+      initNavigation: function() {
+        var activeNode, str,
+          _this = this;
+        str = 'button[id=' + ("nav_" + this.lang) + ']';
+        activeNode = this.el.querySelector(str);
         activeNode.classList.remove('grey');
         return new FastButton(activeNode.parentNode, function(e) {
-          return self.navigate(e);
+          return _this.navigate(e);
         });
       },
       updateNavigation: function(target, targetId) {

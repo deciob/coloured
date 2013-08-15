@@ -8,12 +8,11 @@
 
     NavigationController.prototype =
 
-      initNavigation: (lang, navigation) ->
-        self = @
-        str = 'button[id=' + "nav_#{lang}" + ']'
-        activeNode = navigation.querySelector(str)
+      initNavigation: ->
+        str = 'button[id=' + "nav_#{@lang}" + ']'
+        activeNode = @el.querySelector(str)
         activeNode.classList.remove('grey')
-        new FastButton(activeNode.parentNode, (e) -> self.navigate e)
+        new FastButton(activeNode.parentNode, (e) => @navigate e)
         
       updateNavigation: (target, targetId) ->
         _.each target.parentNode.childNodes, (el) ->
