@@ -18,12 +18,7 @@ define({
   },
   navigationController: {
     create: {
-      module: 'app/navigation/navigation_controller',
-      args: {
-        defaultLanguage: {
-          $ref: "defaultLanguage"
-        }
-      }
+      module: 'app/navigation/navigation_controller'
     },
     properties: {
       defaultLanguage: {
@@ -34,8 +29,8 @@ define({
       }
     },
     ready: {
-      setCurrentLanguage: [],
-      initNavigation: []
+      initNavigation: [],
+      setCurrentLanguage: []
     },
     before: {
       setCurrentLanguage: 'audioController.resetAudio'
@@ -81,9 +76,6 @@ define({
     create: {
       module: 'app/utils/audio_controller',
       args: {
-        defaultLanguage: {
-          $ref: "defaultLanguage"
-        },
         audio: {
           english: {
             $ref: "audioConstructurEnglish"

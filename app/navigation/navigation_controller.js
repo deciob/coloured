@@ -1,14 +1,14 @@
 (function(define) {
   return define(["lodash", "fast_button"], function(_, FastButton) {
     var NavigationController;
-    NavigationController = function(args) {
-      this.defaultLanguage = args.defaultLanguage;
+    NavigationController = function() {
       return this;
     };
     NavigationController.prototype = {
       initNavigation: function() {
         var activeNode, str,
           _this = this;
+        this.lang = this.setCurrentLanguage(this.defaultLanguage);
         str = 'button[id=' + ("nav_" + this.lang) + ']';
         activeNode = this.el.querySelector(str);
         activeNode.classList.remove('grey');
@@ -29,11 +29,11 @@
       navigate: function(e) {
         var id;
         id = e.target.parentNode.id;
-        this.setCurrentLanguage(id.slice(4));
+        this.lang = this.setCurrentLanguage(id.slice(4));
         return this.updateNavigation(e.target.parentNode, id);
       },
       setCurrentLanguage: function(lang) {
-        return this.lang = lang || this.defaultLanguage;
+        return lang || this.defaultLanguage;
       }
     };
     NavigationController.plugins = [

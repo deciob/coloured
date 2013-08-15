@@ -2,13 +2,13 @@
 
   define ["lodash", "fast_button"], (_, FastButton) ->
 
-    NavigationController = (args) ->
-      @defaultLanguage = args.defaultLanguage
+    NavigationController = ->
       @
 
     NavigationController.prototype =
 
       initNavigation: ->
+        @lang = @setCurrentLanguage @defaultLanguage
         str = 'button[id=' + "nav_#{@lang}" + ']'
         activeNode = @el.querySelector(str)
         activeNode.classList.remove('grey')
@@ -23,12 +23,11 @@
 
       navigate: (e) ->
         id = e.target.parentNode.id
-        @setCurrentLanguage id[4..-1]
+        @lang = @setCurrentLanguage id[4..-1]
         @updateNavigation e.target.parentNode, id
 
-      # Initially called on wire ready.
       setCurrentLanguage: (lang) ->
-        @lang = lang or @defaultLanguage
+        lang or @defaultLanguage
         
     NavigationController.plugins = [module: "wire/dom"]
 

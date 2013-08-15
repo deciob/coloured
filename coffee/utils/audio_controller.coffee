@@ -3,40 +3,38 @@
   define ["lodash"], (_) ->
 
     AudioController = (args) ->
-      @defaultLanguage = args.defaultLanguage
       @audio = args.audio
       @conf = args.conf
+      # The AudioController is unaware of its language until it gets this 
+      # information from the NavigationController.
+      @lang = null
       @
 
     AudioController.prototype =
 
-      onTimeUpdate: (evt, spr) ->
-        if evt.currentTarget.currentTime > (spr.start + spr.length)
+      onTimeUpdate: (e, sprite) ->
+        if e.currentTarget.currentTime > (sprite.start + sprite.length)
           @pause()
 
+      # It is called before playing new audio or before changing language.
       resetAudio: ->
-        lang = @getCurrentLanguage()
-        @audio[lang].removeEventListener 'timeupdate', @onTimeUpdateP, false
-        @audio[lang].pause()
+        if @lang
+          @audio[@lang].removeEventListener 'timeupdate', @onTimeUpdateP, false
+          @audio[@lang].pause()
 
       play: (e) ->
-        lang = @getCurrentLanguage()
         @resetAudio()
-        currentSprite = @conf[lang]
+        currentSprite = @conf[@lang]
           .spriteMap[e.selectorTarget.className[4..-1]] # removing "box "
-        @audio[lang].currentTime = currentSprite.start
+        @audio[@lang].currentTime = currentSprite.start
         # Passing the current sprite reference to the `timeupdate`
         # callback by using a partial application.
         @onTimeUpdateP = _.partialRight @onTimeUpdate, currentSprite
-        @audio[lang].addEventListener 'timeupdate', @onTimeUpdateP, false
-        @audio[lang].play()
+        @audio[@lang].addEventListener 'timeupdate', @onTimeUpdateP, false
+        @audio[@lang].play()
 
-      # Initially called on wire init.
       setCurrentLanguage: (lang) ->
-        @lang = lang or @defaultLanguage
-
-      getCurrentLanguage: ->
-        lang = @lang or @defaultLanguage
+        @lang = lang
         
     AudioController.plugins = [module: "wire/dom"]
 

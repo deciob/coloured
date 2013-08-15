@@ -20,14 +20,12 @@ define
   navigationController:
     create: 
       module: 'app/navigation/navigation_controller'
-      args:
-        defaultLanguage: $ref: "defaultLanguage"
     properties: 
       defaultLanguage: $ref: "defaultLanguage"
       el: $ref: "navigation"
-    ready: 
-      setCurrentLanguage: []
+    ready:
       initNavigation: []
+      setCurrentLanguage: []
     before:
       setCurrentLanguage: 'audioController.resetAudio'
     after:
@@ -59,14 +57,12 @@ define
     create: 
       module: 'app/utils/audio_controller'
       args:
-        defaultLanguage: $ref: "defaultLanguage"
         audio:
           english: $ref: "audioConstructurEnglish"
           spanish: $ref: "audioConstructurSpanish"
           italian: $ref: "audioConstructurItalian"
         conf: 
           $ref: "coloursConf"
-    #init: "setCurrentLanguage"
 
     on:
       colours: 
