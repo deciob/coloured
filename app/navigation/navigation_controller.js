@@ -28,9 +28,9 @@
       },
       navigate: function(e) {
         var id;
-        id = e.target.parentNode.id;
+        id = e.target.parentNode.id || e.target.id;
         this.lang = this.setCurrentLanguage(id.slice(4));
-        this.updateNavigation(e.target.parentNode, id);
+        this.updateNavigation(e.target, id);
         return null;
       },
       setCurrentLanguage: function(lang) {

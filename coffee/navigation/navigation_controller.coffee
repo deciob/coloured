@@ -22,9 +22,9 @@
             el.classList.add('grey')
 
       navigate: (e) ->
-        id = e.target.parentNode.id
+        id = e.target.parentNode.id or e.target.id
         @lang = @setCurrentLanguage id[4..-1]
-        @updateNavigation e.target.parentNode, id
+        @updateNavigation e.target, id  # This works in Firefox, not in Chrome
         null
 
       setCurrentLanguage: (lang) ->
