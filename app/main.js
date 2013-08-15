@@ -2,10 +2,24 @@ define({
   theme: {
     module: 'theme/basic.css'
   },
+  navigationConf: {
+    module: "app/navigation/navigation_config"
+  },
   coloursConf: {
     module: "app/colours/colours_config"
   },
   defaultLanguage: "italian",
+  audioConstructurNavigation: {
+    create: {
+      module: 'app/utils/audio_constructor',
+      args: {
+        language: "all",
+        conf: {
+          $ref: "navigationConf"
+        }
+      }
+    }
+  },
   navigation: {
     render: {
       template: {
@@ -14,6 +28,42 @@ define({
     },
     insert: {
       at: "dom.first!header"
+    }
+  },
+  navigationGetCurrentSprite: {
+    module: 'app/navigation/navigation_get_current_sprite'
+  },
+  navigationGetAudioObject: {
+    module: 'app/navigation/navigation_get_audio_object'
+  },
+  coloursGetCurrentSprite: {
+    module: 'app/colours/colours_get_current_sprite'
+  },
+  coloursGetAudioObject: {
+    module: 'app/colours/colours_get_audio_object'
+  },
+  navigationAudioController: {
+    create: {
+      module: 'app/utils/audio_controller',
+      args: {
+        audio: {
+          $ref: "audioConstructurNavigation"
+        },
+        conf: {
+          $ref: "navigationConf"
+        }
+      }
+    },
+    properties: {
+      getCurrentSprite: {
+        $ref: "navigationGetCurrentSprite"
+      },
+      getAudioObject: {
+        $ref: "navigationGetAudioObject"
+      }
+    },
+    after: {
+      setCurrentLanguage: 'audioController.setCurrentLanguage'
     }
   },
   navigationController: {
@@ -33,10 +83,12 @@ define({
       setCurrentLanguage: []
     },
     before: {
-      setCurrentLanguage: 'audioController.resetAudio'
+      setCurrentLanguage: 'audioController.resetAudio',
+      setCurrentLanguage: 'navigationAudioController.resetAudio'
     },
     after: {
-      setCurrentLanguage: 'audioController.setCurrentLanguage'
+      setCurrentLanguage: 'navigationAudioController.setCurrentLanguage',
+      navigate: 'navigationAudioController.play'
     }
   },
   audioConstructurEnglish: {
@@ -90,6 +142,14 @@ define({
         conf: {
           $ref: "coloursConf"
         }
+      }
+    },
+    properties: {
+      getCurrentSprite: {
+        $ref: "coloursGetCurrentSprite"
+      },
+      getAudioObject: {
+        $ref: "coloursGetAudioObject"
       }
     },
     on: {

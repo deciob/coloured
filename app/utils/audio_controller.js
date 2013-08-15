@@ -14,19 +14,27 @@
         }
       },
       resetAudio: function() {
-        if (this.lang) {
-          this.audio[this.lang].removeEventListener('timeupdate', this.onTimeUpdateP, false);
-          return this.audio[this.lang].pause();
+        var audio;
+        audio = this.getAudioObject(this.audio, this.lang);
+        if (audio) {
+          audio.removeEventListener('timeupdate', this.onTimeUpdateP, false);
+          return audio.pause();
         }
       },
       play: function(e) {
-        var currentSprite;
+        var args, audio, currentSprite;
         this.resetAudio();
-        currentSprite = this.conf[this.lang].spriteMap[e.selectorTarget.className.slice(4)];
-        this.audio[this.lang].currentTime = currentSprite.start;
+        args = {
+          e: e,
+          conf: this.conf,
+          lang: this.lang
+        };
+        currentSprite = this.getCurrentSprite(args);
+        audio = this.getAudioObject(this.audio, this.lang);
+        audio.currentTime = currentSprite.start;
         this.onTimeUpdateP = _.partialRight(this.onTimeUpdate, currentSprite);
-        this.audio[this.lang].addEventListener('timeupdate', this.onTimeUpdateP, false);
-        return this.audio[this.lang].play();
+        audio.addEventListener('timeupdate', this.onTimeUpdateP, false);
+        return audio.play();
       },
       setCurrentLanguage: function(lang) {
         return this.lang = lang;

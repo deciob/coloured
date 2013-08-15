@@ -25,9 +25,14 @@
         id = e.target.parentNode.id
         @lang = @setCurrentLanguage id[4..-1]
         @updateNavigation e.target.parentNode, id
+        null
 
       setCurrentLanguage: (lang) ->
         lang or @defaultLanguage
+
+      setNavigationAudio: (lang) ->
+        console.log "setNavigationAudio", lang
+        {root: "all", spriteMap: lang}
         
     NavigationController.plugins = [module: "wire/dom"]
 

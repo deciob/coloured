@@ -18,20 +18,22 @@
 
       # It is called before playing new audio or before changing language.
       resetAudio: ->
-        if @lang
-          @audio[@lang].removeEventListener 'timeupdate', @onTimeUpdateP, false
-          @audio[@lang].pause()
+        audio = @getAudioObject @audio, @lang
+        if audio
+          audio.removeEventListener 'timeupdate', @onTimeUpdateP, false
+          audio.pause()
 
       play: (e) ->
         @resetAudio()
-        currentSprite = @conf[@lang]
-          .spriteMap[e.selectorTarget.className[4..-1]] # removing "box "
-        @audio[@lang].currentTime = currentSprite.start
-        # Passing the current sprite reference to the `timeupdate`
-        # callback by using a partial application.
+        args = e: e, conf: @conf, lang: @lang
+        currentSprite = @getCurrentSprite args
+        audio = @getAudioObject @audio, @lang
+        audio.currentTime = currentSprite.start
+        ## Passing the current sprite reference to the `timeupdate`
+        ## callback by using a partial application.
         @onTimeUpdateP = _.partialRight @onTimeUpdate, currentSprite
-        @audio[@lang].addEventListener 'timeupdate', @onTimeUpdateP, false
-        @audio[@lang].play()
+        audio.addEventListener 'timeupdate', @onTimeUpdateP, false
+        audio.play()
 
       setCurrentLanguage: (lang) ->
         @lang = lang

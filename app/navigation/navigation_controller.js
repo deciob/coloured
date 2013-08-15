@@ -30,10 +30,18 @@
         var id;
         id = e.target.parentNode.id;
         this.lang = this.setCurrentLanguage(id.slice(4));
-        return this.updateNavigation(e.target.parentNode, id);
+        this.updateNavigation(e.target.parentNode, id);
+        return null;
       },
       setCurrentLanguage: function(lang) {
         return lang || this.defaultLanguage;
+      },
+      setNavigationAudio: function(lang) {
+        console.log("setNavigationAudio", lang);
+        return {
+          root: "all",
+          spriteMap: lang
+        };
       }
     };
     NavigationController.plugins = [

@@ -5,10 +5,20 @@ define
   theme: 
     module: 'theme/basic.css'
 
+  navigationConf:
+    module: "app/navigation/navigation_config"
+
   coloursConf:
     module: "app/colours/colours_config"
 
   defaultLanguage: "italian"
+
+  audioConstructurNavigation:
+    create:
+      module: 'app/utils/audio_constructor'
+      args:
+        language: "all"
+        conf: $ref: "navigationConf"
 
   navigation:
     render:
@@ -16,6 +26,35 @@ define
         module: "text!navigation/navigation_template.html"
     insert:
       at: "dom.first!header"
+
+
+
+  navigationGetCurrentSprite:
+    module: 'app/navigation/navigation_get_current_sprite'
+
+  navigationGetAudioObject:
+    module: 'app/navigation/navigation_get_audio_object'
+
+  coloursGetCurrentSprite:
+    module: 'app/colours/colours_get_current_sprite'
+
+  coloursGetAudioObject:
+    module: 'app/colours/colours_get_audio_object'
+
+
+  navigationAudioController:
+    create: 
+      module: 'app/utils/audio_controller'
+      args:
+        audio: $ref: "audioConstructurNavigation"
+        conf: 
+          $ref: "navigationConf"
+    properties: 
+      getCurrentSprite: $ref: "navigationGetCurrentSprite"
+      getAudioObject: $ref: "navigationGetAudioObject"
+    after:
+      setCurrentLanguage: 'audioController.setCurrentLanguage'
+
 
   navigationController:
     create: 
@@ -28,8 +67,14 @@ define
       setCurrentLanguage: []
     before:
       setCurrentLanguage: 'audioController.resetAudio'
+      setCurrentLanguage: 'navigationAudioController.resetAudio'
     after:
-      setCurrentLanguage: 'audioController.setCurrentLanguage'
+      #setCurrentLanguage: 'audioController.setCurrentLanguage'
+      setCurrentLanguage: 'navigationAudioController.setCurrentLanguage'
+      navigate: 'navigationAudioController.play'
+      #setNavigationAudio: 'navigationAudioController.setCurrentLanguage'
+      #setCurrentLanguage: 'navigationAudioController.setCurrentLanguage'
+    
 
   # It simply returns an HTML5 new Audio instance
   audioConstructurEnglish:
@@ -63,6 +108,12 @@ define
           italian: $ref: "audioConstructurItalian"
         conf: 
           $ref: "coloursConf"
+    #after:
+    #  setCurrentLanguage: 'navigationAudioController.setCurrentLanguage'
+    #mixin: $ref: "coloursGetCurrentSprite"
+    properties: 
+      getCurrentSprite: $ref: "coloursGetCurrentSprite"
+      getAudioObject: $ref: "coloursGetAudioObject"
 
     on:
       colours: 
