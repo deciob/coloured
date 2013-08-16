@@ -32,7 +32,9 @@
   config = {
     baseUrl: './',
     paths: {
-      'fast_button': "app/utils/fast_button"
+      'fast_button': "app/utils/fast_button",
+      'get_siblings': "app/utils/get_siblings",
+      'get_node_config': "app/utils/get_node_config"
     },
     packages: [
       {

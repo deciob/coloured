@@ -5,6 +5,7 @@
       this.audio = args.audio;
       this.conf = args.conf;
       this.lang = null;
+      this.currentAudio = null;
       return this;
     };
     AudioController.prototype = {
@@ -14,23 +15,16 @@
         }
       },
       resetAudio: function() {
-        var audio;
-        audio = this.getAudioObject(this.audio, this.lang);
-        if (audio) {
-          audio.removeEventListener('timeupdate', this.onTimeUpdateP, false);
-          return audio.pause();
+        if (this.currentAudio) {
+          this.currentAudio.removeEventListener('timeupdate', this.onTimeUpdateP, false);
+          return this.currentAudio.pause();
         }
       },
-      play: function(e) {
-        var args, audio, currentSprite;
+      play: function(audioConf) {
+        var audio, currentSprite;
         this.resetAudio();
-        args = {
-          e: e,
-          conf: this.conf,
-          lang: this.lang
-        };
-        currentSprite = this.getCurrentSprite(args);
-        audio = this.getAudioObject(this.audio, this.lang);
+        this.currentAudio = audio = audioConf.audio;
+        currentSprite = audioConf.sprite;
         audio.currentTime = currentSprite.start;
         this.onTimeUpdateP = _.partialRight(this.onTimeUpdate, currentSprite);
         audio.addEventListener('timeupdate', this.onTimeUpdateP, false);

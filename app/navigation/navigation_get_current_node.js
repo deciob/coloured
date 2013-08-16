@@ -1,8 +1,11 @@
 (function(define) {
   return define(function(require) {
-    var getCurrentSprite;
-    return getCurrentSprite = function(e) {
-      return this.conf[this.lang].spriteMap[e.selectorTarget.id.slice(4)];
+    var getCurrentNode;
+    return getCurrentNode = function(e) {
+      if (e) {
+        return e.target;
+      }
+      return document.getElementById("nav_" + this.defaultLanguage);
     };
   });
 })(typeof define === "function" && define.amd ? define : function(factory) {

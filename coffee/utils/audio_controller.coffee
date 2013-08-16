@@ -8,6 +8,7 @@
       # The AudioController is unaware of its language until it gets this 
       # information from the NavigationController.
       @lang = null
+      @currentAudio = null
       @
 
     AudioController.prototype =
@@ -18,16 +19,14 @@
 
       # It is called before playing new audio or before changing language.
       resetAudio: ->
-        audio = @getAudioObject @audio, @lang
-        if audio
-          audio.removeEventListener 'timeupdate', @onTimeUpdateP, false
-          audio.pause()
+        if @currentAudio
+          @currentAudio.removeEventListener 'timeupdate', @onTimeUpdateP, false
+          @currentAudio.pause()
 
-      play: (e) ->
+      play: (audioConf) ->
         @resetAudio()
-        args = e: e, conf: @conf, lang: @lang
-        currentSprite = @getCurrentSprite args
-        audio = @getAudioObject @audio, @lang
+        @currentAudio = audio = audioConf.audio
+        currentSprite = audioConf.sprite
         audio.currentTime = currentSprite.start
         ## Passing the current sprite reference to the `timeupdate`
         ## callback by using a partial application.

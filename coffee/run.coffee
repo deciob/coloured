@@ -64,6 +64,9 @@
     ,
     paths:
       'fast_button': "app/utils/fast_button"
+      'get_siblings': "app/utils/get_siblings"
+      #'get_current_node': "app/navigation/get_current_node"
+      'get_node_config': "app/utils/get_node_config"
     ,
     packages: [
       name: "colours"

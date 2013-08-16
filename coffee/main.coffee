@@ -5,20 +5,27 @@ define
   theme: 
     module: 'theme/basic.css'
 
+  defaultLanguage: "italian"
+
+#### Navigation related
+
   navigationConf:
     module: "app/navigation/navigation_config"
 
-  coloursConf:
-    module: "app/colours/colours_config"
+  navigationGetCurrentSprite:
+    module: 'app/navigation/navigation_get_current_sprite'
 
-  defaultLanguage: "italian"
+  navigationGetAudioObject:
+    module: 'app/navigation/navigation_get_audio_object'
 
-  audioConstructurNavigation:
-    create:
-      module: 'app/utils/audio_constructor'
-      args:
-        language: "all"
-        conf: $ref: "navigationConf"
+  navigationGetAudioConf:
+    module: 'app/navigation/navigation_get_audio_conf'
+
+  navigationGetCurrentNode:
+    module: 'app/navigation/navigation_get_current_node'
+
+  navigationGetNodeConf:
+    module: 'app/navigation/navigation_get_node_conf'
 
   navigation:
     render:
@@ -27,20 +34,12 @@ define
     insert:
       at: "dom.first!header"
 
-
-
-  navigationGetCurrentSprite:
-    module: 'app/navigation/navigation_get_current_sprite'
-
-  navigationGetAudioObject:
-    module: 'app/navigation/navigation_get_audio_object'
-
-  coloursGetCurrentSprite:
-    module: 'app/colours/colours_get_current_sprite'
-
-  coloursGetAudioObject:
-    module: 'app/colours/colours_get_audio_object'
-
+  audioConstructurNavigation:
+    create:
+      module: 'app/utils/audio_constructor'
+      args:
+        language: "all"
+        conf: $ref: "navigationConf"
 
   navigationAudioController:
     create: 
@@ -49,34 +48,41 @@ define
         audio: $ref: "audioConstructurNavigation"
         conf: 
           $ref: "navigationConf"
-    properties: 
-      getCurrentSprite: $ref: "navigationGetCurrentSprite"
-      getAudioObject: $ref: "navigationGetAudioObject"
     after:
-      setCurrentLanguage: 'audioController.setCurrentLanguage'
-
+      setCurrentLanguage: 'coloursAudioController.setCurrentLanguage'
+    on:
+      navigation: 
+        'click:button': 'navigationGetAudioConf | play'
 
   navigationController:
     create: 
       module: 'app/navigation/navigation_controller'
     properties: 
       defaultLanguage: $ref: "defaultLanguage"
-      el: $ref: "navigation"
+      getCurrentNode: $ref: "navigationGetCurrentNode"
     ready:
       initNavigation: []
       setCurrentLanguage: []
-    before:
-      setCurrentLanguage: 'audioController.resetAudio'
-      setCurrentLanguage: 'navigationAudioController.resetAudio'
     after:
-      #setCurrentLanguage: 'audioController.setCurrentLanguage'
       setCurrentLanguage: 'navigationAudioController.setCurrentLanguage'
-      navigate: 'navigationAudioController.play'
-      #setNavigationAudio: 'navigationAudioController.setCurrentLanguage'
-      #setCurrentLanguage: 'navigationAudioController.setCurrentLanguage'
-    
+    on:
+      navigation: 
+        'click:button': 'navigationGetNodeConf | navigate'
 
-  # It simply returns an HTML5 new Audio instance
+#### Colours related
+    
+  coloursConf:
+    module: "app/colours/colours_config"
+
+  coloursGetCurrentSprite:
+    module: 'app/colours/colours_get_current_sprite'
+
+  coloursGetAudioObject:
+    module: 'app/colours/colours_get_audio_object'
+
+  coloursGetAudioConf:
+    module: 'app/colours/colours_get_audio_conf'
+
   audioConstructurEnglish:
     create:
       module: 'app/utils/audio_constructor'
@@ -98,7 +104,16 @@ define
         language: "italian"
         conf: $ref: "coloursConf"
 
-  audioController:
+  colours:
+    render:
+      template:
+        module: "text!colours/colours_template.html"
+      css:
+        module: "css!colours/colours_structure.css"
+    insert:
+      at: "dom.first!section"
+
+  coloursAudioController:
     create: 
       module: 'app/utils/audio_controller'
       args:
@@ -108,37 +123,9 @@ define
           italian: $ref: "audioConstructurItalian"
         conf: 
           $ref: "coloursConf"
-    #after:
-    #  setCurrentLanguage: 'navigationAudioController.setCurrentLanguage'
-    #mixin: $ref: "coloursGetCurrentSprite"
-    properties: 
-      getCurrentSprite: $ref: "coloursGetCurrentSprite"
-      getAudioObject: $ref: "coloursGetAudioObject"
-
     on:
       colours: 
-        'click:div.box': 'play'
-        #'touchstart:div.box': 'play'
-
-  
-  # Create a simple view by rendering html, replacing some i18n strings
-  # and loading CSS.  Then, insert into the DOM
-  colours:
-    render:
-      template:
-        module: "text!colours/colours_template.html"
-        #replace: 
-        #  module: 'i18n!colours/strings'
-      css:
-        module: "css!colours/colours_structure.css"
-
-    insert:
-      at: "dom.first!section"
-
-    #on:
-    #  # Whenever the user clicks a link or a <button>
-    #  # within domNode, call component1.doSomething
-    #  'click:div.box': 'component1.doSomething'
+        'click:div.box': 'coloursGetAudioConf | play'
 
   
   # Wire.js plugins
